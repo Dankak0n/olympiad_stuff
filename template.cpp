@@ -153,6 +153,9 @@ const ll     D = 510;
 const ll    D2 = 1010;
 const ll     N = 101000;
 const ll    N2 = 201000;
+const ll    N3 = 301000;
+const ll    N4 = 401000;
+const ll    N5 = 501000;
 const ll   INF = 2000000000000000007;
 const int iINF = 2000000007;
 //1000000007
