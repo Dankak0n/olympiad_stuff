@@ -32,7 +32,7 @@
 #define             pb push_back
 #define             eb emplace_back
 #define             mp make_pair
-#define          sq(x) ((ll)(x) * (ll)(x))
+#define          sq(x) ((x) * (x))
 #define          sz(a) ((long long)(a).size())
 #define         all(a) a.begin(), a.end()
 #define         unq(x) (x.resize(unique(all(x)) - x.begin()))
