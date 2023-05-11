@@ -19,6 +19,7 @@
 #include <numeric>
 #include <cassert>
 #include <utility>
+#include <iterator>
 #include <assert.h>
 #include <iostream>
 #include <algorithm>
@@ -32,13 +33,14 @@
 #define             pb push_back
 #define             eb emplace_back
 #define             mp make_pair
-#define          sq(x) ((x) * (x))
+#define          sq(x) ((x)*(x))
 #define          sz(a) ((long long)(a).size())
-#define         all(a) a.begin(), a.end()
-#define         unq(x) (x.resize(unique(all(x)) - x.begin()))
+#define         all(a) a.begin(),a.end()
+#define         unq(x) (x.resize(unique(a.begin(),a.end())-x.begin()))
 #define       popcount __builtin_popcountll
-#define      maxbit(x) (63 - __builtin_clzll(x))
+#define      maxbit(x) (63-__builtin_clzll(x))
 #define    getbit(x,i) ((((ll)x)>>(i))&1LL)
+#define      vali(a,i) ((i)>=0?(a)[i]:0)
 #define        IN(a,n) for(int _i_=0;_i_<(n);++_i_){cin>>a[_i_];}
 #define     IN2(a,n,m) for(int _i_=0;_i_<(n);++_i_){for(int _j_=0;_j_<(m);++_j_){cin>>a[_i_][_j_];}}
 #define       OUT(a,n) for(int _i_=0;_i_<(n);++_i_){cout<<a[_i_]<<' ';}
@@ -46,12 +48,13 @@
 #define      ROUT(a,n) for(int _i_=(n)-1;_i_>=0;--_i_){cout<<a[_i_]<<' ';}
 #define    FILL(a,n,x) for(int _i_=0;_i_<(n);++_i_){a[_i_]=(x);}
 #define FILL2(a,n,m,x) for(int _i_=0;_i_<(n);++_i_){for(int _j_=0;_j_<(m);++_j_){a[_i_][_j_]=(x);}}
-#define     rep(l,r,i) for(ll i=(l);i!=(r);i+=((l)<(r)?1LL:-1LL))
+#define     rep(f,s,i) for(ll i=(f);i!=(s);i+=((f)<(s)?1LL:-1LL))
+#define    repR(l,r,i) for(ll i=(l);i<(r);i++)
+#define    repL(r,l,i) for(ll i=(r);i>(l);i--)
+#define         rip(x) for(int __i=0;__i<x;__i++)
 
 #define   y0 y_9910
 #define   y1 y_9911
-#define next next_239
-#define prev prev_239
 
 using namespace std;
 
@@ -98,24 +101,25 @@ bool is_local = 0;
 #define debn(x, n) ;
 #define deba(x) ;
 #endif
+
+void freopen_();
+void freopen_local_();
+void solve_();
+void precalculation_();
+void cin_(int & i);
+
 void init_() {
     if (is_local) {
-        freopen ("input.txt", "r", stdin);
-//        freopen ("output.txt", "w", stdout);
-		srand((int)time(0));
-		rnd.seed((int)time(0));
+        freopen_local_();
+        srand((int)time(0));
+        rnd.seed((int)time(0));
     }
     else {
-//        freopen ("input.txt", "r", stdin);
-//        freopen ("output.txt", "w", stdout);
+        freopen_();
     }
     ios::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 }
-
-void solve_();
-void precalculation_();
-void cin_(int & i);
 
 int main() {
     init_();
@@ -133,6 +137,20 @@ int main() {
 //And I loved him
 //)':
 
+const ld    PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
+const int    D = 510;
+const int   D2 = 1010;
+const int    N = 101000;
+const int   N2 = 201000;
+const int   N3 = 301000;
+const int   N4 = 401000;
+const int   N5 = 501000;
+const int   N6 = 601000;
+const ll   INF = 2000000000000000007;
+const int iINF = 2000000007;
+
+//--------------------------------------------------------------------------------------------------------------------
+
 //#include <ext/pb_ds/assoc_container.hpp>
 //#define    unknown_t int
 //#define   lower_than order_of_key
@@ -143,24 +161,15 @@ int main() {
 //#include <bits/stdc++.h>
 
 //#define point pld
+//#define point pii
 //#define X fi
 //#define Y se
 
 //const V<pll> to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 //const V<pll> to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
-const ld    PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
-const ll     D = 510;
-const ll    D2 = 1010;
-const ll     N = 101000;
-const ll    N2 = 201000;
-const ll    N3 = 301000;
-const ll    N4 = 401000;
-const ll    N5 = 501000;
-const ll   INF = 2000000000000000007;
-const int iINF = 2000000007;
 //1000000007
 //998244353
-const ll   MOD = 998244353;
+const ll   MOD = 1000000007;
 
 void precalculation_() {
 }
@@ -168,13 +177,23 @@ void precalculation_() {
 void solve_() {
 }
 
+
+
+
 //--------------------------------------------------------------------------------------------------------------------
 void cin_(int & i) {
 //    cin >> i;
 }
 
+void freopen_() {
+//    freopen ("input.txt", "r", stdin);
+//    freopen ("output.txt", "w", stdout);
+}
 
-
+void freopen_local_() {
+    freopen ("input.txt", "r", stdin);
+//    freopen ("output.txt", "w", stdout);
+}
 
 
 //
