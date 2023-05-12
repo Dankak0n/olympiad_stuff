@@ -36,7 +36,7 @@
 #define          sq(x) ((x)*(x))
 #define          sz(a) ((long long)(a).size())
 #define         all(a) a.begin(),a.end()
-#define         unq(x) (x.resize(unique(a.begin(),a.end())-x.begin()))
+#define         unq(x) (x.resize(unique(x.begin(),x.end())-x.begin()))
 #define       popcount __builtin_popcountll
 #define      maxbit(x) (63-__builtin_clzll(x))
 #define    getbit(x,i) ((((ll)x)>>(i))&1LL)
