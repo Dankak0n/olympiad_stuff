@@ -1,4 +1,4 @@
-//Lil_Dankakon
+#define Lil_Dankakon
 
 #include <map>
 #include <set>
