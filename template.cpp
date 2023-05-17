@@ -123,9 +123,9 @@ void init_() {
 
 int main() {
     init_();
-    precalculation_();
     int tests = 1;
     cin_(tests);
+    precalculation_();
     for(int i = 0; i < tests; ++i) {
 //        cout << "Case #" << i + 1 << ": ";
         solve_();
@@ -172,6 +172,8 @@ const int iINF = 2000000007;
 //1000000007
 //998244353
 const ll   MOD = 1000000007;
+
+
 
 void precalculation_() {
 }
