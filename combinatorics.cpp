@@ -8,22 +8,42 @@ namespace combinatorics {
     long long mod_phi = 0;
     long long default_mod = 0;
     long long default_return_value = 0;
+    int cur_k = 0, cur_n = 0;
     std::vector <long long> factorial;
-    int cur_n = 0, cur_k = 0;
-    std::vector <std::vector<long long> > Cnk_arr;
+    std::vector <std::vector<long long> > cnk_arr;
+//--------------------------------------------------------------------------------------------------------------------
+    void cnk_clear() {
+        cnk_arr.clear();
+    }
+    void fac_clear() {
+        factorial.clear();
+    }
 //--------------------------------------------------------------------------------------------------------------------
     long long gcd_ext(long long a, long long b, long long& x, long long& y) {
         if(a == 0) {
-            x = 0; y = 1;
-            return b;
+            x = 0;
+            if (default_mod) {
+                y = 1 % default_mod;
+            } else {
+                y = 1;
+            }
+            if (default_mod) {
+                return b % default_mod;
+            } else {
+                return b;
+            }
         }
         long long x1, y1;
-        long long d = gcd_ext (b % a, a, x1, y1);
+        long long d = gcd_ext(b % a, a, x1, y1);
         x = y1 - (b / a) * x1;
         y = x1;
+        if (default_mod) {
+            x %= default_mod;
+            y %= default_mod;
+            d %= default_mod;
+        }
         return d;
     }
-
     long long phi(long long n) {
         long long res = n;
         for(long long p = 2; p * p <= n; ++p) {
@@ -48,12 +68,10 @@ namespace combinatorics {
         }
         default_mod = x;
     }
-
     void set_mod(long long x) {
         mod_phi = x - 1;
         default_mod = x;
     }
-
     void set_ret(long long x) {
         default_return_value = x;
     }
@@ -83,7 +101,6 @@ namespace combinatorics {
             ans = x + mulc(x, y - 1);
         } else {
             ans = mulc(x, y / 2);
-            ans %= default_mod;
             ans *= 2;
         }
         return ans % default_mod;
@@ -91,7 +108,7 @@ namespace combinatorics {
 
     long long mul(long long a, long long b) {
         if (default_mod) {
-            if (__builtin_log(a) + __builtin_log(b) >= 18) {
+            if (__builtin_log10(a) + __builtin_log10(b) >= 18) {
                 return mulc(a, b);
             } else {
                 return a * b % default_mod;
@@ -128,7 +145,7 @@ namespace combinatorics {
             }
         }
         long long ans = 1;
-        for (ll i = 2; i <= x; ++i) {
+        for (long long i = 2; i <= x; ++i) {
             ans *= i;
             if (default_mod) {
                 ans %= default_mod;
@@ -189,25 +206,25 @@ namespace combinatorics {
                 return default_return_value;
             }
         }
-        while (n >= (int)Cnk_arr.size() || k >= (int)Cnk_arr[n].size()) {
+        k = min(k, n - k);
+        while (n >= (int)cnk_arr.size() || k >= (int)cnk_arr[n].size()) {
             if (cur_k == 0) {
-                Cnk_arr.push_back({});
-                Cnk_arr[cur_n].push_back(1);
-            } else if (cur_k == cur_n) {
-                Cnk_arr[cur_n].push_back(1);
+                cnk_arr.push_back({1});
+            } else if (cur_k == cur_n / 2 && cur_n % 2 == 0) {
+                cnk_arr[cur_n].push_back(cnk_arr[cur_n - 1][cur_k - 1] * 2);
             } else {
-                Cnk_arr[cur_n].push_back(Cnk_arr[cur_n - 1][cur_k - 1] + Cnk_arr[cur_n - 1][cur_k]);
+                cnk_arr[cur_n].push_back(cnk_arr[cur_n - 1][cur_k - 1] + cnk_arr[cur_n - 1][cur_k]);
             }
             if (default_mod) {
-                Cnk_arr[cur_n][cur_k] %= default_mod;
+                cnk_arr[cur_n][cur_k] %= default_mod;
             }
             cur_k++;
-            if (cur_k > cur_n) {
+            if (cur_k > cur_n / 2) {
                 cur_n++;
                 cur_k = 0;
             }
         }
-        return Cnk_arr[n][k];
+        return cnk_arr[n][k];
     };
 //--------------------------------------------------------------------------------------------------------------------
     struct num_t {
@@ -221,14 +238,7 @@ namespace combinatorics {
         num_t(){
         }
 //-------------------------------------------------------------------------------------
-        num_t(long long x) {
-            if (default_mod) {
-                this->value = x % default_mod;
-            } else {
-                this->value = x;
-            }
-        }
-        num_t(int x) {
+        explicit num_t(long long x) {
             if (default_mod) {
                 this->value = x % default_mod;
             } else {
@@ -236,267 +246,56 @@ namespace combinatorics {
             }
         }
 //-------------------------------------------------------------------------------------
-        friend operator+(num_t left, num_t right) {
-            if (default_mod) {
-                return (long long)(left.value + right.value) % default_mod;
-            } else {
-                return (long long)(left.value + right.value);
-            }
-        }
-        friend operator+(num_t left, long long right) {
-            if (default_mod) {
-                return (long long)(left.value + right) % default_mod;
-            } else {
-                return (long long)(left.value + right);
-            }
-        }
-        friend operator+(long long left, num_t right) {
-            if (default_mod) {
-                return (long long)(left + right.value) % default_mod;
-            } else {
-                return (long long)(left + right.value);
-            }
-        }
-        friend operator+(num_t left, int right) {
-            if (default_mod) {
-                return (long long)(left.value + right) % default_mod;
-            } else {
-                return (long long)(left.value + right);
-            }
-        }
-        friend operator+(int left, num_t right) {
-            if (default_mod) {
-                return (long long)((long long)left + right.value) % default_mod;
-            } else {
-                return (long long)((long long)left + right.value);
-            }
-        }
-//-------------------------------------------------------------------------------------
-        friend operator-(num_t left, num_t right) {
-            if (default_mod) {
-                if (left.value < right.value) {
-                    return (long long)(left.value - right.value + default_mod) % default_mod;
-                } else {
-                    return (long long)(left.value - right.value) % default_mod;
-                }
-            } else {
-                return (long long)(left.value - right.value);
-            }
-        }
-        friend operator-(num_t left, long long right) {
-            if (default_mod) {
-                if (left.value < right) {
-                    return (long long)(left.value - right + default_mod) % default_mod;
-                } else {
-                    return (long long)(left.value - right) % default_mod;
-                }
-            } else {
-                return (long long)(left.value - right);
-            }
-        }
-        friend operator-(long long left, num_t right) {
-            if (default_mod) {
-                if (left < right.value) {
-                    return (long long)(left - right.value + default_mod) % default_mod;
-                } else {
-                    return (long long)(left - right.value) % default_mod;
-                }
-            } else {
-                return (long long)(left - right.value);
-            }
-        }
-        friend operator-(num_t left, int right) {
-            if (default_mod) {
-                if (left.value < right) {
-                    return (int)(left.value - right + default_mod) % default_mod;
-                } else {
-                    return (int)(left.value - right) % default_mod;
-                }
-            } else {
-                return (long long)(left.value - right);
-            }
-        }
-        friend operator-(int left, num_t right) {
-            if (default_mod) {
-                if (left < right.value) {
-                    return (long long)((long long)left - right.value + default_mod) % default_mod;
-                } else {
-                    return (long long)((long long)left - right.value) % default_mod;
-                }
-            } else {
-                return (long long)((long long)left - right.value);
-            }
-        }
-//-------------------------------------------------------------------------------------
-        friend operator*(num_t left, num_t right) {
-            if (default_mod) {
-                return (long long)(left.value * right.value) % default_mod;
-            } else {
-                return (long long)(left.value * right.value);
-            }
-        }
-        friend operator*(num_t left, long long right) {
-            if (default_mod) {
-                return (long long)(left.value * right) % default_mod;
-            } else {
-                return (long long)(left.value * right);
-            }
-        }
-        friend operator*(long long left, num_t right) {
-            if (default_mod) {
-                return (long long)(left * right.value) % default_mod;
-            } else {
-                return (long long)(left * right.value);
-            }
-        }
-//-------------------------------------------------------------------------------------
-        num_t operator = (num_t other) {
+        num_t operator=(num_t other) {
             value = other.value;
             return *this;
         }
-        num_t operator = (long long other) {
+        num_t operator=(long long other) {
             value = other;
             return *this;
         }
-        num_t operator = (int other) {
+        num_t operator=(int other) {
             value = other;
             return *this;
         }
 //-------------------------------------------------------------------------------------
-        num_t operator += (num_t other) {
-            value += other.value;
+        friend operator+(num_t a, num_t b) {
             if (default_mod) {
-                value %= default_mod;
+                return (long long)(a.value + b.value) % default_mod;
+            } else {
+                return (long long)(a.value + b.value);
             }
-            return *this;
         }
-        num_t operator += (long long other) {
-            value += other;
+        friend operator-(num_t a, num_t b) {
             if (default_mod) {
-                value %= default_mod;
+                if (a.value < b.value) {
+                    return (long long)(a.value - b.value + default_mod) % default_mod;
+                } else {
+                    return (long long)(a.value - b.value) % default_mod;
+                }
+            } else {
+                return (long long)(a.value - b.value);
             }
-            return *this;
         }
-        num_t operator += (int other) {
-            value += other;
+        friend operator*(num_t a, num_t b) {
             if (default_mod) {
-                value %= default_mod;
+                return (long long)(a.value * b.value) % default_mod;
+            } else {
+                return (long long)(a.value * b.value);
             }
-            return *this;
         }
 //-------------------------------------------------------------------------------------
-        num_t operator *= (num_t other) {
-            value *= other.value;
-            if (default_mod) {
-                value %= default_mod;
-            }
-            return *this;
+        friend bool operator>(num_t & a, num_t & b) {
+            return a.value > b.value;
         }
-        num_t operator *= (long long other) {
-            value *= other;
-            if (default_mod) {
-                value %= default_mod;
-            }
-            return *this;
+        friend bool operator<(num_t & a, num_t & b) {
+            return a.value < b.value;
         }
-        num_t operator *= (int other) {
-            value *= other;
-            if (default_mod) {
-                value %= default_mod;
-            }
-            return *this;
+        friend bool operator>=(num_t & a, num_t & b) {
+            return a.value >= b.value;
         }
-//-------------------------------------------------------------------------------------
-        num_t operator -= (num_t other) {
-            value -= other.value;
-            if (default_mod) {
-                if (value < 0) {
-                    value += default_mod;
-                }
-                value %= default_mod;
-            }
-            return *this;
-        }
-        num_t operator -= (long long other) {
-            value -= other;
-            if (default_mod) {
-                if (value < 0) {
-                    value += default_mod;
-                }
-                value %= default_mod;
-            }
-            return *this;
-        }
-        num_t operator -= (int other) {
-            value -= other;
-            if (default_mod) {
-                if (value < 0) {
-                    value += default_mod;
-                }
-                value %= default_mod;
-            }
-            return *this;
-        }
-//-------------------------------------------------------------------------------------
-        friend bool operator  > (const num_t & left, const num_t & right) {
-            return left.value > right.value;
-        }
-        friend bool operator  < (const num_t & left, const num_t & right) {
-            return left.value < right.value;
-        }
-        friend bool operator  >= (const num_t & left, const num_t & right) {
-            return left.value >= right.value;
-        }
-        friend bool operator  <= (const num_t & left, const num_t & right) {
-            return left.value <= right.value;
-        }
-        friend bool operator  > (const num_t & left, const long long & right) {
-            return left.value > right;
-        }
-        friend bool operator  < (const num_t & left, const long long & right) {
-            return left.value < right;
-        }
-        friend bool operator  >= (const num_t & left, const long long & right) {
-            return left.value >= right;
-        }
-        friend bool operator  <= (const num_t & left, const long long & right) {
-            return left.value <= right;
-        }
-        friend bool operator  > (const num_t & left, const int & right) {
-            return left.value > right;
-        }
-        friend bool operator  < (const num_t & left, const int & right) {
-            return left.value < right;
-        }
-        friend bool operator  >= (const num_t & left, const int & right) {
-            return left.value >= right;
-        }
-        friend bool operator  <= (const num_t & left, const int & right) {
-            return left.value <= right;
-        }
-        friend bool operator  < (const int & left, const num_t & right) {
-            return       left < right.value;
-        }
-        friend bool operator  <= (const int & left, const num_t & right) {
-            return       left <= right.value;
-        }
-        friend bool operator  > (const int & left, const num_t & right) {
-            return       left > right.value;
-        }
-        friend bool operator  >= (const int & left, const num_t & right) {
-            return       left >= right.value;
-        }
-        friend bool operator  < (const long long & left, const num_t & right) {
-            return       left < right.value;
-        }
-        friend bool operator  <= (const long long & left, const num_t & right) {
-            return       left <= right.value;
-        }
-        friend bool operator  > (const long long & left, const num_t & right) {
-            return       left > right.value;
-        }
-        friend bool operator  >= (const long long & left, const num_t & right) {
-            return       left >= right.value;
+        friend bool operator<=(num_t & a, num_t & b) {
+            return a.value <= b.value;
         }
 //-------------------------------------------------------------------------------------
         friend std::istream & operator >> (istream & in,  num_t & to_in) {
@@ -508,4 +307,183 @@ namespace combinatorics {
             return out;
         }
     };
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    num_t operator+(num_t a, T b) {
+        if (default_mod) {
+            return num_t((a.value + (long long)b) % default_mod);
+        } else {
+            return num_t(a.value + (long long)b);
+        }
+    }
+    template <typename T>
+    num_t operator+(T a, num_t b) {
+        if (default_mod) {
+            return num_t(((long long)a + b.value) % default_mod);
+        } else {
+            return num_t((long long)a + b.value);
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    void operator+=(num_t & a, T b) {
+        a.value += (long long)b;
+        if (default_mod) {
+            a.value %= default_mod;
+        }
+    }
+    template <typename T>
+    void operator+=(T & a, num_t b) {
+        a += (long long)b;
+        if (default_mod) {
+            a %= default_mod;
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    num_t operator-(num_t a, T b) {
+        if (default_mod) {
+            if (a.value < (long long)b) {
+                return num_t((a.value - (long long)b + default_mod) % default_mod);
+            } else {
+                return num_t((a.value - (long long)b) % default_mod);
+            }
+        } else {
+            return num_t(a.value - (long long)b);
+        }
+    }
+    template <typename T>
+    num_t operator-(T a, num_t b) {
+        if (default_mod) {
+            if ((long long)a < b.value) {
+                return num_t(((long long)a - b.value + default_mod) % default_mod);
+            } else {
+                return num_t(((long long)a - b.value) % default_mod);
+            }
+        } else {
+            return num_t((long long)a - b.value);
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    void operator-=(num_t & a, T b) {
+        a.value -= (long long)b;
+        if (default_mod) {
+            if (a.value < 0) {
+                a.value += default_mod;
+            } else {
+                a.value %= default_mod;
+            }
+        }
+    }
+    template <typename T>
+    void operator-=(T & a, num_t b) {
+        a -= (long long)b;
+        if (default_mod) {
+            if (a < 0) {
+                a += default_mod;
+            } else {
+                a %= default_mod;
+            }
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    num_t operator*(num_t a, T b) {
+        if (default_mod) {
+            return num_t((a.value * (long long)b) % default_mod);
+        } else {
+            return num_t(a.value * (long long)b);
+        }
+    }
+    template <typename T>
+    num_t operator*(T a, num_t b) {
+        if (default_mod) {
+            return num_t(((long long)a * b.value) % default_mod);
+        } else {
+            return num_t((long long)a * b.value);
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    void operator*=(num_t & a, T b) {
+        a.value *= (long long)b;
+        if (default_mod) {
+            a.value %= default_mod;
+        }
+    }
+    template <typename T>
+    void operator*=(T & a, num_t b) {
+        a *= (long long)b;
+        if (default_mod) {
+            a %= default_mod;
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    num_t operator/(num_t a, T b) {
+        if (default_mod) {
+            return num_t(div(a.value, (long long)b));
+        } else {
+            return num_t(a.value / (long long)b);
+        }
+    }
+    template <typename T>
+    num_t operator/(T a, num_t b) {
+        if (default_mod) {
+            return num_t(div((long long)a, b.value));
+        } else {
+            return num_t((long long)a / b.value);
+        }
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    void operator/=(num_t & a, T b) {
+        a.value = div(a.value, (long long)b);
+    }
+    template <typename T>
+    void operator/=(T & a, num_t b) {
+        a = div(a, (long long)b);
+    }
+//-------------------------------------------------------------------------------------
+    template <typename T>
+    bool operator<(num_t a, T b) {
+        return a.value < (long long)b;
+    }
+    template <typename T>
+    bool operator<(T a, num_t b) {
+        return (long long)a < b.value;
+    }
+    template <typename T>
+    bool operator>(num_t a, T b) {
+        return a.value > (long long)b;
+    }
+    template <typename T>
+    bool operator>(T a, num_t b) {
+        return (long long)a > b.value;
+    }
+    template <typename T>
+    bool operator<=(num_t a, T b) {
+        return a.value <= (long long)b;
+    }
+    template <typename T>
+    bool operator<=(T a, num_t b) {
+        return (long long)a <= b.value;
+    }
+    template <typename T>
+    bool operator>=(num_t a, T b) {
+        return a.value >= (long long)b;
+    }
+    template <typename T>
+    bool operator>=(T a, num_t b) {
+        return (long long)a >= b.value;
+    }
+    template <typename T>
+    bool operator==(num_t a, T b) {
+        return a.value == (long long)b;
+    }
+    template <typename T>
+    bool operator==(T a, num_t b) {
+        return (long long)a == b.value;
+    }
 }
