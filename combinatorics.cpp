@@ -1,4 +1,4 @@
-namespace combinatorics {
+namespace commod {
 #ifndef Lil_Dankakon
     #include <vector>
     #include <iostream>
@@ -10,7 +10,7 @@ namespace combinatorics {
     long long default_return_value = 0;
     int cur_k = 0, cur_n = 0;
     std::vector <long long> factorial;
-    std::vector <std::vector <long long> > cnk_arr;
+    std::vector <std::vector<long long> > cnk_arr;
 //--------------------------------------------------------------------------------------------------------------------
     void cnk_clear() {
         cnk_arr.clear();
@@ -19,29 +19,15 @@ namespace combinatorics {
         factorial.clear();
     }
 //--------------------------------------------------------------------------------------------------------------------
-    long long gcd_ext(long long a, long long b, long long& x, long long& y) {
+    long long gcd_ext(long long a, long long b, long long & x, long long & y) {
         if(a == 0) {
-            x = 0;
-            if (default_mod) {
-                y = 1 % default_mod;
-            } else {
-                y = 1;
-            }
-            if (default_mod) {
-                return b % default_mod;
-            } else {
-                return b;
-            }
+            x = 0; y = 1;
+            return b;
         }
         long long x1, y1;
         long long d = gcd_ext(b % a, a, x1, y1);
         x = y1 - (b / a) * x1;
         y = x1;
-        if (default_mod) {
-            x %= default_mod;
-            y %= default_mod;
-            d %= default_mod;
-        }
         return d;
     }
     long long phi(long long n) {
@@ -93,15 +79,16 @@ namespace combinatorics {
     }
 
     long long mulc(long long x, long long y) {
-        if (y == 0 || x == 0) {
+        if (y == 0) {
             return 0;
         }
         long long ans;
         if (y & 1) {
-            ans = x + mulc(x, y - 1);
+            ans = x % default_mod;
+            ans += mulc(x, y - 1);
         } else {
             ans = mulc(x, y / 2);
-            ans *= 2;
+            ans += ans;
         }
         return ans % default_mod;
     }
@@ -133,16 +120,15 @@ namespace combinatorics {
     }
 
     long long div(long long a, long long b) {
+        if (b == 0 || __gcd(default_mod, b) != 1) {
+            return default_return_value;
+        }
         return mul(a, powc(b, mod_phi - 1));
     }
 //--------------------------------------------------------------------------------------------------------------------
     long long fac_n(int x) {
         if (x < 0) {
-            if (default_mod) {
-                return default_return_value % default_mod;
-            } else {
-                return default_return_value;
-            }
+            return default_return_value;
         }
         long long ans = 1;
         for (long long i = 2; i <= x; ++i) {
@@ -156,11 +142,7 @@ namespace combinatorics {
 
     long long fac_1(int x) {
         if (x < 0) {
-            if (default_mod) {
-                return default_return_value % default_mod;
-            } else {
-                return default_return_value;
-            }
+            return default_return_value;
         }
         while (x >= (int)factorial.size()) {
             if (factorial.empty()) {
@@ -182,11 +164,7 @@ namespace combinatorics {
 //--------------------------------------------------------------------------------------------------------------------
     long long Cnk_1(int n, int k) {
         if (k > n || k < 0) {
-            if (default_mod) {
-                return default_return_value % default_mod;
-            } else {
-                return default_return_value;
-            }
+            return default_return_value;
         }
         if (n == k) {
             if (default_mod) {
@@ -200,11 +178,7 @@ namespace combinatorics {
 
     long long Cnk_n(int n, int k) {
         if (k > n || k < 0) {
-            if (default_mod) {
-                return default_return_value % default_mod;
-            } else {
-                return default_return_value;
-            }
+            return default_return_value;
         }
         k = min(k, n - k);
         while (n >= (int)cnk_arr.size() || k >= (int)cnk_arr[n].size()) {
@@ -258,31 +232,45 @@ namespace combinatorics {
             value = other;
             return *this;
         }
-//-------------------------------------------------------------------------------------
-        friend operator+(num_t a, num_t b) {
+
+        num_t operator+=(num_t other) {
+            value += other.value;
             if (default_mod) {
-                return (long long)(a.value + b.value) % default_mod;
-            } else {
-                return (long long)(a.value + b.value);
+                value %= default_mod;
             }
+            return *this;
         }
-        friend operator-(num_t a, num_t b) {
+        num_t operator-=(num_t other) {
+            value -= other.value;
             if (default_mod) {
-                if (a.value < b.value) {
-                    return (long long)(a.value - b.value + default_mod) % default_mod;
+                if (value < 0) {
+                    value += default_mod;
                 } else {
-                    return (long long)(a.value - b.value) % default_mod;
+                    value %= default_mod;
                 }
-            } else {
-                return (long long)(a.value - b.value);
             }
+            return *this;
         }
-        friend operator*(num_t a, num_t b) {
-            if (default_mod) {
-                return (long long)(a.value * b.value) % default_mod;
-            } else {
-                return (long long)(a.value * b.value);
-            }
+        num_t operator*=(num_t other) {
+            value = mul(value, other.value);
+            return *this;
+        }
+        num_t operator/=(num_t other) {
+            value = div(value, other.value);
+            return *this;
+        }
+//-------------------------------------------------------------------------------------
+        friend long long operator+(num_t a, num_t b) {
+            return add(a, b);
+        }
+        friend long long operator-(num_t a, num_t b) {
+            return sub(a, b);
+        }
+        friend long long operator*(num_t a, num_t b) {
+            return mul(a, b);
+        }
+        friend long long operator/(num_t a, num_t b) {
+            return div(a, b);
         }
 //-------------------------------------------------------------------------------------
         friend bool operator>(num_t & a, num_t & b) {
@@ -390,34 +378,20 @@ namespace combinatorics {
 //-------------------------------------------------------------------------------------
     template <typename T>
     num_t operator*(num_t a, T b) {
-        if (default_mod) {
-            return num_t((a.value * (long long)b) % default_mod);
-        } else {
-            return num_t(a.value * (long long)b);
-        }
+        return num_t(mul(a, b));
     }
     template <typename T>
     num_t operator*(T a, num_t b) {
-        if (default_mod) {
-            return num_t(((long long)a * b.value) % default_mod);
-        } else {
-            return num_t((long long)a * b.value);
-        }
+        return num_t(mul(a, b));
     }
 //-------------------------------------------------------------------------------------
     template <typename T>
     void operator*=(num_t & a, T b) {
-        a.value *= (long long)b;
-        if (default_mod) {
-            a.value %= default_mod;
-        }
+        a.value = a.value * (long long)b;
     }
     template <typename T>
     void operator*=(T & a, num_t b) {
-        a *= (long long)b;
-        if (default_mod) {
-            a %= default_mod;
-        }
+        a = a * (long long)b;
     }
 //-------------------------------------------------------------------------------------
     template <typename T>
