@@ -10,7 +10,7 @@ namespace combinatorics {
     long long default_return_value = 0;
     int cur_k = 0, cur_n = 0;
     std::vector <long long> factorial;
-    std::vector <std::vector<long long> > cnk_arr;
+    std::vector <std::vector <long long> > cnk_arr;
 //--------------------------------------------------------------------------------------------------------------------
     void cnk_clear() {
         cnk_arr.clear();
