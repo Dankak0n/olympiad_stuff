@@ -88,7 +88,7 @@ namespace commod {
             ans += mulc(x, y - 1);
         } else {
             ans = mulc(x, y / 2);
-            ans += ans;
+            ans *= 2;
         }
         return ans % default_mod;
     }
@@ -387,11 +387,11 @@ namespace commod {
 //-------------------------------------------------------------------------------------
     template <typename T>
     void operator*=(num_t & a, T b) {
-        a.value = a.value * (long long)b;
+        a.value = mul(a.value, (long long)b);
     }
     template <typename T>
     void operator*=(T & a, num_t b) {
-        a = a * (long long)b;
+        a = mul(a, (long long)b);
     }
 //-------------------------------------------------------------------------------------
     template <typename T>
