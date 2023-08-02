@@ -1,4 +1,4 @@
-//#0.1
+//#0.1.1
 #define Lil_Dankakon
 
 #include <map>
@@ -94,7 +94,7 @@ char     nchr() { char x; cin >> x; return x; }
 str      nstr() { string x; cin >> x; return x; }
 
 long long rand(long long n)              { return rnd() % n; }
-long long rand(long long l, long long r) { return rnd() % (r - l + 1) + l; }
+long long rand(long long l, long long r) { return rnd() % (r - l + 1) + l; } //[]
 
 double getTime() { return clock() / (double) CLOCKS_PER_SEC; }
 
@@ -118,19 +118,12 @@ _freopen(),
 _freopen_local(),
 _solve(),
 _precalculation(),
-_cin(int & i);
+_cin(int &i);
 
 void _init() {
-    if (_is_local) {
-        _freopen_local();
-        srand((int)time(0));
-        rnd.seed((int)time(0));
-    }
-    else {
-        _freopen();
-    }
-    ios::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
+    if (_is_local) { _freopen_local(); srand((int)time(0)); rnd.seed((int)time(0)); }
+    else { _freopen(); }
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 }
 
 int main() {
@@ -138,28 +131,16 @@ int main() {
     int tests = 1;
     _cin(tests);
     _precalculation();
-    for(int i = 0; i < tests; ++i) {
-//        cout << "Case #" << i + 1 << ": ";
-        _solve();
-    }
-    if (_is_local)
-        cout << "\n\ntime = " << getTime() << endl;
+    for(int i = 0; i < tests; ++i) _solve();
+    if (_is_local) cout << "\n\ntime = " << getTime() << endl;
 }
 //GOOSE!!! was here :(
 //And I loved him
 //)':
 
 const double PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
-const int     D = 510;
-const int    D2 = 1010;
-const int     N = 101000;
-const int    N2 = 201000;
-const int    N3 = 301000;
-const int    N4 = 401000;
-const int    N5 = 501000;
-const int    N6 = 601000;
-const int  iINF = 2000000007;
-const long long INF = 2000000000000000007;
+const string _alf = "abcdefghijklmnopqrstuvwxyz";
+const string _ALF = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -177,9 +158,17 @@ const long long INF = 2000000000000000007;
 //const vector < pair <int, int> > to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 //const vector < pair <int, int> > to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 //const vector < pair <int, int> > toK = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
+
+const int      iINF = 2000000007;
+const long long INF = 2000000000000000007;
+
 //1000000007
 //998244353
 const long long MOD = 1000000007;
+
+const int         K = 10;
+const int         D = 1010;
+const int         N = 100100;
 
 //using namespace
 
@@ -190,10 +179,8 @@ void _solve() {
 }
 
 
-
-
 //--------------------------------------------------------------------------------------------------------------------
-void _cin(int & i) {
+void _cin(int &i) {
 //    cin >> i;
 }
 
