@@ -1,463 +1,256 @@
 namespace commod {
-#ifndef Lil_Dankakon
-    #include <vector>
-    #include <iostream>
-    using namespace std;
-#endif // Lil_Dankakon
+namespace modul {
+#include <vector>
+#include <iostream>
+#include <map>
 #define gcd __gcd
-    long long mod_phi = 0;
-    long long default_mod = 0;
-    long long default_return_value = 0;
-    int cur_k = 0, cur_n = 0;
-    std::vector <long long> factorial;
-    std::vector <std::vector<long long> > cnk_arr;
-//--------------------------------------------------------------------------------------------------------------------
-    void cnk_clear() {
-        cnk_arr.clear();
+
+long long _default_mod = 0;
+long long _default_phi = 0;
+
+template<class T1, class T2, class T3>
+    T1 add (T1 a, T2 b, T3 m = 0) {
+        if (m == (T3)0) m = _default_mod;
+        return ( m != 0 ? ( a + b ) % m : a + b );
     }
-    void fac_clear() {
-        factorial.clear();
+template<class T1, class T2, class T3>
+    T1 sub (T1 a, T2 b, T3 m = 0) {
+        if (m == (T3)0) m = _default_mod;
+        return ( m != 0 ? ( a - b + m ) % m : a - b );
     }
-//--------------------------------------------------------------------------------------------------------------------
-    long long gcd_ext(long long a, long long b, long long & x, long long & y) {
-        if(a == 0) {
-            x = 0; y = 1;
-            return b;
+template<class T1, class T2, class T3>
+    T1 mul (T1 a, T2 b, T3 m = 0) {
+        if (m == (T3)0) m = _default_mod;
+        return ( m != 0 ? ( a * b ) % m : a * b );
+    }
+template<class T1, class T2, class T3>
+    T1 mulc (T1 a, T2 b, T3 m) {
+        if (m == 0) m = _default_mod;
+        if ((T1)b == (T1)0) return (T1)0;
+        T1 ans;
+        if ((T1)b % (T1)2 == (T1)1)
+            ans = a % m + mulc ( a, b - (T2)1, m );
+        else
+            ans = mulc ( a, (T2)b / (T2)2, m ) * (T1)2;
+        return ans % m;
+    }
+template<class T1, class T2, class T3>
+    T1 powc (T1 a, T2 b, T3 m) {
+        if (m == (T3)0) m = _default_mod;
+        T1 res = (T1)1 % m;
+        while (b != (T2)0) {
+            if (b % (T2)2 == (T2)1) { res *= a; res %= m; }
+            a *= a; a %= m; b /= (T2)2;
         }
-        long long x1, y1;
-        long long d = gcd_ext(b % a, a, x1, y1);
-        x = y1 - (b / a) * x1;
-        y = x1;
+        return res;
+    }
+template<class T1, class T2>
+    T1 div (T1 a, T1 b, T2 m, T2 mod_phi = (T2)0) {
+        if (m == (T2)0) m = _default_mod;
+        if (mod_phi == (T2)0) mod_phi = m - (T2)1;
+        if (_default_phi != 0) mod_phi = _default_phi;
+        return mul(a, powc(b, mod_phi - (T2)1, m), m);
+    }
+template <class T>
+    T gcd_ext (T a, T b, T &x, T &y) {
+        if(a == (T)0) { x = (T)0; y = (T)1; return b; }
+        T x_1, y_1;
+        T d = gcd_ext ( b % a, a, x_1, y_1 );
+        x = y_1 - ( b / a ) * x_1; y = x_1;
         return d;
     }
-    long long phi(long long n) {
-        long long res = n;
-        for(long long p = 2; p * p <= n; ++p) {
-            if(n % p == 0) {
+template <class T>
+    T get_phi (T x) {
+        T res = x;
+        for (T p = (T)2; p * p <= x; p++)
+            if (x % p == (T)0) {
                 res -= res / p;
+                while (x % p == (T)0) x /= p;
             }
-            while(n % p == 0) {
-                n /= p;
-            }
-        }
-        if(n > 1) {
-            res -= res / n;
-        }
+        if (x > (T)1) res -= res / x;
         return res;
     }
-//--------------------------------------------------------------------------------------------------------------------
-    void set_mod(long long x, int is_prime) {
+    void set_phi (long long x = 0) {
+        if (x == 0) {
+            _default_phi = get_phi(_default_mod);
+        } else {
+            _default_phi = x;
+        }
+    }
+    void set_mod (long long x, bool is_prime = true) {
         if (is_prime) {
-            mod_phi = x - 1;
+            _default_phi = x - 1;
         } else {
-            mod_phi = phi(x);
+            _default_phi = get_phi(x);
         }
-        default_mod = x;
+        _default_mod = x;
     }
-    void set_mod(long long x) {
-        mod_phi = x - 1;
-        default_mod = x;
-    }
-    void set_ret(long long x) {
-        default_return_value = x;
-    }
-//--------------------------------------------------------------------------------------------------------------------
-    long long add(long long a, long long b) {
-        if (default_mod) {
-            return (a + b) % default_mod;
-        } else {
-            return a + b;
+template <class T>
+    class mod_t {
+    private:
+        T val, mod, phi;
+        bool mod_prime, mod_priority;
+    public:
+        enum PRIORITY {INTERNAL, DEFAULT};
+        void info() {
+            std::clog << "Val: " << val << "\n" << "Mod: " << mod << "\n"
+            << "Phi: " << phi << "\n" << "Mp : " << mod_prime << "\n"
+            << "\n" << "Dmp: " << mod_priority << "\n\n";
         }
-    }
-
-    long long sub(long long a, long long b) {
-        if (default_mod) {
-            return (a - b < 0 ? a - b + default_mod : a - b) % default_mod;
-        } else {
-            return a - b;
-        }
-    }
-
-    long long mulc(long long x, long long y) {
-        if (y == 0) {
-            return 0;
-        }
-        long long ans;
-        if (y & 1) {
-            ans = x % default_mod;
-            ans += mulc(x, y - 1);
-        } else {
-            ans = mulc(x, y / 2);
-            ans *= 2;
-        }
-        return ans % default_mod;
-    }
-
-    long long mul(long long a, long long b) {
-        if (default_mod) {
-            if (__builtin_log10(a) + __builtin_log10(b) >= 18) {
-                return mulc(a, b);
-            } else {
-                return a * b % default_mod;
+        T get_mod() { return (mod_priority == DEFAULT && _default_mod != 0 ? _default_mod : mod); }
+        void relax () {
+            T m = get_mod();
+            if (m != 0) {
+                if (val < 0) val += m;
+                val = (val < 0 ? (m - (-val % m)) % m : val % m);
             }
-        } else {
-            return a * b;
         }
-    }
-
-    long long powc(long long a, long long b) {
-        long long res = 1LL % default_mod;
-        while (b) {
-            if (b & 1) {
-                res *= a;
-                res %= default_mod;
-            }
-            a *= a;
-            a %= default_mod;
-            b >>= 1;
+        void set_mod (const T &x, bool is_prime = true) {
+            mod = x;
+            mod_prime = is_prime;
+            relax();
         }
-        return res;
-    }
-
-    long long div(long long a, long long b) {
-        if (b == 0 || __gcd(default_mod, b) != 1) {
-            return default_return_value;
+        void set_phi (const T &x = 0) {
+            if (x == 0 && !mod_prime) phi = get_phi(mod);
+                else if (x == 0 && mod_prime) phi = mod - 1;
+                    else phi = x;
+            mod_prime = (phi == mod - 1);
+            relax();
         }
-        return mul(a, powc(b, mod_phi - 1));
-    }
-//--------------------------------------------------------------------------------------------------------------------
-    long long fac_n(int x) {
-        if (x < 0) {
-            return default_return_value;
+        void set_priority (const bool &priority) { mod_priority = priority; }
+        operator T() { return val; }
+        explicit mod_t (T nval = 0, T nmod = 0, bool is_prime = true, T nphi = 0) {
+            val = nval;
+            mod_t::set_mod(nmod, is_prime);
+            mod_t::set_phi(nphi);
+            set_priority(DEFAULT);
+        };
+        mod_t operator=(mod_t other)  { val = other.val; relax(); other.relax(); return *this; }
+        mod_t operator+=(mod_t other) { relax(); other.relax(); val += other.val; relax(); return *this; }
+        mod_t operator-=(mod_t other) { relax(); other.relax(); val -= other.val; relax(); return *this; }
+        mod_t operator*=(mod_t other) { relax(); other.relax(); val *= other.val; relax(); return *this; }
+        mod_t operator/=(mod_t other) {
+            relax(); other.relax();
+            val = div(val, other.val,
+                      get_mod() > other.get_mod() ? get_mod() : other.get_mod(),
+                      get_mod() > other.get_mod() ? phi : other.phi);
+            relax(); return *this;
         }
-        long long ans = 1;
-        for (long long i = 2; i <= x; ++i) {
-            ans *= i;
-            if (default_mod) {
-                ans %= default_mod;
-            }
+        friend mod_t operator+(mod_t a, mod_t b) { a += b; return a; }
+        friend mod_t operator-(mod_t a, mod_t b) { a -= b; return a; }
+        friend mod_t operator*(mod_t a, mod_t b) { a *= b; return a; }
+        friend mod_t operator/(mod_t a, mod_t b) { a /= b; return a; }
+        friend bool operator<(mod_t &a, mod_t &b)  { a.relax(); b.relax(); return a.val < b.val; }
+        friend bool operator<=(mod_t &a, mod_t &b) { a.relax(); b.relax(); return a.val <= b.val; }
+        friend bool operator>(mod_t &a, mod_t &b)  { a.relax(); b.relax(); return a.val > b.val; }
+        friend bool operator>=(mod_t &a, mod_t &b) { a.relax(); b.relax(); return a.val >= b.val; }
+        friend bool operator==(mod_t &a, mod_t &b) { a.relax(); b.relax(); return a.val == b.val; }
+        friend bool operator!=(mod_t &a, mod_t &b) { a.relax(); b.relax(); return a.val != b.val; }
+        friend bool operator!(mod_t &a)            { a.relax(); return !a.val; }
+        friend std::istream & operator >> (istream &in,  mod_t &to_in) {to_in.relax(); in >> to_in.val; return in; }
+        friend std::ostream & operator << (ostream & out, mod_t & to_out) {to_out.relax(); out << to_out.val; return out; }
+    };
+    template <class T1, class T2> mod_t<T1> operator+(mod_t<T1> a, T2 b) { return a + (mod_t<T1>)b; }
+    template <class T1, class T2> mod_t<T1> operator+(T2 b, mod_t<T1> a) { return (mod_t<T1>)b + a; }
+    template <class T1, class T2> void operator+=(mod_t<T1> &a, T2 b) { a += (mod_t<T1>)b; }
+    template <class T1, class T2> void operator+=(T2 &b, mod_t<T1> a) { a += (T2)a; }
+    template <class T1, class T2> mod_t<T1> operator-(mod_t<T1> a, T2 b) { return a - (mod_t<T1>)b; }
+    template <class T1, class T2> mod_t<T1> operator-(T2 b, mod_t<T1> a) { return (mod_t<T1>)b - a; }
+    template <class T1, class T2> void operator-=(mod_t<T1> &a, T2 b) { a -= (mod_t<T1>)b; }
+    template <class T1, class T2> void operator-=(T2 &b, mod_t<T1> a) { a -= (T2)a; }
+    template <class T1, class T2> mod_t<T1> operator*(mod_t<T1> a, T2 b) { return a * (mod_t<T1>)b; }
+    template <class T1, class T2> mod_t<T1> operator*(T2 b, mod_t<T1> a) { return (mod_t<T1>)b * a; }
+    template <class T1, class T2> void operator*=(mod_t<T1> &a, T2 b) { a *= (mod_t<T1>)b; }
+    template <class T1, class T2> void operator*=(T2 &b, mod_t<T1> a) { a *= (T2)a; }
+    template <class T1, class T2> mod_t<T1> operator/(mod_t<T1> a, T2 b) { return a / (mod_t<T1>)b; }
+    template <class T1, class T2> mod_t<T1> operator/(T2 b, mod_t<T1> a) { return (mod_t<T1>)b / a; }
+    template <class T1, class T2> void operator/=(mod_t<T1> &a, T2 b) { a /= (mod_t<T1>)b; }
+    template <class T1, class T2> void operator/=(T2 &b, mod_t<T1> a) { a /= (T2)a; }
+    template <class T1, class T2> mod_t<T1> operator^(mod_t<T1> a, T2 b) { a.relax(); return powc(a.val, b, a.get_mod()); }
+    template <class T1, class T2> void operator^=(mod_t<T1> &a, T2 b) { a = a ^ b; }
+}
+namespace comba {
+template<class T1, class T2>
+    T2 factn (const T1 &n, T2 m) {
+        T2 ans = (T2)1;
+        if (m == (T2)0)
+        m = (m == (T2)0 ? modul::_default_mod : m);
+        if (m != (T2)0) ans %= m;
+        for (int i = 2; i <= n; i++) {
+            ans *= (T2)i;
+            if (m != (T2)0) ans %= m;
         }
         return ans;
     }
-
-    long long fac_1(int x) {
-        if (x < 0) {
-            return default_return_value;
+template<class T = int>
+    long long factn (const T &n) {
+        long long ans = 1;
+        if (modul::_default_mod != 0) ans %= modul::_default_mod;
+        for (int i = 2; i <= n; i++) {
+            ans *= i;
+            if (modul::_default_mod != 0) ans %= modul::_default_mod;
         }
-        while (x >= (int)factorial.size()) {
-            if (factorial.empty()) {
-                if (default_mod) {
-                    factorial.push_back(1LL % default_mod);
-                } else {
-                    factorial.push_back(1LL);
-                }
-            } else {
-                if (default_mod) {
-                    factorial.push_back(factorial.back() * factorial.size() % default_mod);
-                } else {
-                    factorial.push_back(factorial.back() * factorial.size());
-                }
-            }
-        }
-        return factorial[x];
+        return ans;
     }
-//--------------------------------------------------------------------------------------------------------------------
-    long long Cnk_1(int n, int k) {
-        if (k > n || k < 0) {
-            return default_return_value;
+template <class T1 = int, class T2>
+    T2 fact (const T1 &n, T2 m) {
+        static std::map < T2, std::vector <T2> > _fact_arr;
+        if (_fact_arr[m].empty())
+            _fact_arr[m].push_back((T2)1);
+        while (n >= (int)_fact_arr[m].size()) {
+            _fact_arr[m].push_back(modul::mul(_fact_arr[m].back(), _fact_arr[m].size(), m));
         }
-        if (n == k) {
-            if (default_mod) {
-                return 1LL % default_mod;
-            } else {
-                return 1LL;
-            }
-        }
-        return div(fac_1(n), mul(fac_1(n - k), fac_1(k)));
+        return _fact_arr[m][n];
     }
-
-    long long Cnk_n(int n, int k) {
-        if (k > n || k < 0) {
-            return default_return_value;
+template <class T1 = int, class T2>
+    T2 rfact (const T1 &n, T2 m) {
+        if (m == (T2)0) m = modul::_default_mod;
+        static std::map < T2, std::vector <T2> > _rfact_arr;
+        if (_rfact_arr[m].empty())
+            _rfact_arr[m].push_back(m == 0 ? (T2)1 : (T2)1 % m);
+        while (n >= (T1)_rfact_arr[m].size()) {
+            _rfact_arr[m].push_back(modul::div(_rfact_arr[m].back(), (T2)_rfact_arr[m].size(), m));
         }
-        k = min(k, n - k);
-        while (n >= (int)cnk_arr.size() || k >= (int)cnk_arr[n].size()) {
+        return _rfact_arr[m][n];
+    }
+template <class T>
+    T cnk (const int &n, const int &k, const T &m) {
+        if (k > n || k < 0) {
+            return (T)0;
+        } else {
+            return fact(n, m) * rfact(k, m) % m * rfact(n - k, m) % m;
+        }
+    }
+    long long cnk (const int &n, const int &k) {
+        if (k > n || k < 0) {
+            return 0;
+        } else {
+            return (modul::_default_mod != 0 ? cnk(n, k, modul::_default_mod) : fact(n, 0) * rfact(k, 0) * rfact(n - k, 0));
+        }
+    }
+template <class T1 = int, class T2>
+    T2 cnkn (const T1 &n, T1 k, T2 m) {
+        if (m == (T2)0) m = modul::_default_mod;
+        if (k > n || k < 0) return (T2)0;
+        k = (k + k < n ? k : n - k); // k = min(k, n - k);
+        static std::map <T2, std::vector < std::vector <T2> > > _cnk_arr;
+        static int cur_k = 0, cur_n = 0;
+        while (n >= (T1)_cnk_arr[m].size() || k >= (T1)_cnk_arr[m][n].size()) {
             if (cur_k == 0) {
-                cnk_arr.push_back({1});
+                _cnk_arr[m].push_back({(T2)1});
             } else if (cur_k == cur_n / 2 && cur_n % 2 == 0) {
-                cnk_arr[cur_n].push_back(cnk_arr[cur_n - 1][cur_k - 1] * 2);
+                _cnk_arr[m][cur_n].push_back(_cnk_arr[m][cur_n - 1][cur_k - 1] * (T2)2);
             } else {
-                cnk_arr[cur_n].push_back(cnk_arr[cur_n - 1][cur_k - 1] + cnk_arr[cur_n - 1][cur_k]);
+                _cnk_arr[m][cur_n].push_back(_cnk_arr[m][cur_n - 1][cur_k - 1] + _cnk_arr[m][cur_n - 1][cur_k]);
             }
-            if (default_mod) {
-                cnk_arr[cur_n][cur_k] %= default_mod;
-            }
+            if (m != (T2)0) _cnk_arr[m][cur_n][cur_k] %= m;
             cur_k++;
             if (cur_k > cur_n / 2) {
                 cur_n++;
                 cur_k = 0;
             }
         }
-        return cnk_arr[n][k];
-    };
-//--------------------------------------------------------------------------------------------------------------------
-    struct num_t {
-        long long value;
-        operator int() const {
-            return value;
-        }
-        operator long long() const {
-            return value;
-        }
-        num_t(){
-        }
-//-------------------------------------------------------------------------------------
-        explicit num_t(long long x) {
-            if (default_mod) {
-                this->value = x % default_mod;
-            } else {
-                this->value = x;
-            }
-        }
-//-------------------------------------------------------------------------------------
-        num_t operator=(num_t other) {
-            value = other.value;
-            return *this;
-        }
-        num_t operator=(long long other) {
-            value = other;
-            return *this;
-        }
-        num_t operator=(int other) {
-            value = other;
-            return *this;
-        }
-
-        num_t operator+=(num_t other) {
-            value += other.value;
-            if (default_mod) {
-                value %= default_mod;
-            }
-            return *this;
-        }
-        num_t operator-=(num_t other) {
-            value -= other.value;
-            if (default_mod) {
-                if (value < 0) {
-                    value += default_mod;
-                } else {
-                    value %= default_mod;
-                }
-            }
-            return *this;
-        }
-        num_t operator*=(num_t other) {
-            value = mul(value, other.value);
-            return *this;
-        }
-        num_t operator/=(num_t other) {
-            value = div(value, other.value);
-            return *this;
-        }
-//-------------------------------------------------------------------------------------
-        friend long long operator+(num_t a, num_t b) {
-            return add(a, b);
-        }
-        friend long long operator-(num_t a, num_t b) {
-            return sub(a, b);
-        }
-        friend long long operator*(num_t a, num_t b) {
-            return mul(a, b);
-        }
-        friend long long operator/(num_t a, num_t b) {
-            return div(a, b);
-        }
-//-------------------------------------------------------------------------------------
-        friend bool operator>(num_t & a, num_t & b) {
-            return a.value > b.value;
-        }
-        friend bool operator<(num_t & a, num_t & b) {
-            return a.value < b.value;
-        }
-        friend bool operator>=(num_t & a, num_t & b) {
-            return a.value >= b.value;
-        }
-        friend bool operator<=(num_t & a, num_t & b) {
-            return a.value <= b.value;
-        }
-//-------------------------------------------------------------------------------------
-        friend std::istream & operator >> (istream & in,  num_t & to_in) {
-            in >> to_in.value;
-            return in;
-        }
-        friend std::ostream & operator << (ostream & out, const num_t & to_out) {
-            out << to_out.value;
-            return out;
-        }
-    };
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    num_t operator+(num_t a, T b) {
-        if (default_mod) {
-            return num_t((a.value + (long long)b) % default_mod);
-        } else {
-            return num_t(a.value + (long long)b);
-        }
-    }
-    template <typename T>
-    num_t operator+(T a, num_t b) {
-        if (default_mod) {
-            return num_t(((long long)a + b.value) % default_mod);
-        } else {
-            return num_t((long long)a + b.value);
-        }
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    void operator+=(num_t & a, T b) {
-        a.value += (long long)b;
-        if (default_mod) {
-            a.value %= default_mod;
-        }
-    }
-    template <typename T>
-    void operator+=(T & a, num_t b) {
-        a += (long long)b;
-        if (default_mod) {
-            a %= default_mod;
-        }
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    num_t operator-(num_t a, T b) {
-        if (default_mod) {
-            if (a.value < (long long)b) {
-                return num_t((a.value - (long long)b + default_mod) % default_mod);
-            } else {
-                return num_t((a.value - (long long)b) % default_mod);
-            }
-        } else {
-            return num_t(a.value - (long long)b);
-        }
-    }
-    template <typename T>
-    num_t operator-(T a, num_t b) {
-        if (default_mod) {
-            if ((long long)a < b.value) {
-                return num_t(((long long)a - b.value + default_mod) % default_mod);
-            } else {
-                return num_t(((long long)a - b.value) % default_mod);
-            }
-        } else {
-            return num_t((long long)a - b.value);
-        }
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    void operator-=(num_t & a, T b) {
-        a.value -= (long long)b;
-        if (default_mod) {
-            if (a.value < 0) {
-                a.value += default_mod;
-            } else {
-                a.value %= default_mod;
-            }
-        }
-    }
-    template <typename T>
-    void operator-=(T & a, num_t b) {
-        a -= (long long)b;
-        if (default_mod) {
-            if (a < 0) {
-                a += default_mod;
-            } else {
-                a %= default_mod;
-            }
-        }
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    num_t operator*(num_t a, T b) {
-        return num_t(mul(a, b));
-    }
-    template <typename T>
-    num_t operator*(T a, num_t b) {
-        return num_t(mul(a, b));
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    void operator*=(num_t & a, T b) {
-        a.value = mul(a.value, (long long)b);
-    }
-    template <typename T>
-    void operator*=(T & a, num_t b) {
-        a = mul(a, (long long)b);
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    num_t operator/(num_t a, T b) {
-        if (default_mod) {
-            return num_t(div(a.value, (long long)b));
-        } else {
-            return num_t(a.value / (long long)b);
-        }
-    }
-    template <typename T>
-    num_t operator/(T a, num_t b) {
-        if (default_mod) {
-            return num_t(div((long long)a, b.value));
-        } else {
-            return num_t((long long)a / b.value);
-        }
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    void operator/=(num_t & a, T b) {
-        a.value = div(a.value, (long long)b);
-    }
-    template <typename T>
-    void operator/=(T & a, num_t b) {
-        a = div(a, (long long)b);
-    }
-//-------------------------------------------------------------------------------------
-    template <typename T>
-    bool operator<(num_t a, T b) {
-        return a.value < (long long)b;
-    }
-    template <typename T>
-    bool operator<(T a, num_t b) {
-        return (long long)a < b.value;
-    }
-    template <typename T>
-    bool operator>(num_t a, T b) {
-        return a.value > (long long)b;
-    }
-    template <typename T>
-    bool operator>(T a, num_t b) {
-        return (long long)a > b.value;
-    }
-    template <typename T>
-    bool operator<=(num_t a, T b) {
-        return a.value <= (long long)b;
-    }
-    template <typename T>
-    bool operator<=(T a, num_t b) {
-        return (long long)a <= b.value;
-    }
-    template <typename T>
-    bool operator>=(num_t a, T b) {
-        return a.value >= (long long)b;
-    }
-    template <typename T>
-    bool operator>=(T a, num_t b) {
-        return (long long)a >= b.value;
-    }
-    template <typename T>
-    bool operator==(num_t a, T b) {
-        return a.value == (long long)b;
-    }
-    template <typename T>
-    bool operator==(T a, num_t b) {
-        return (long long)a == b.value;
+        return _cnk_arr[m][n][k];
     }
 }
+};
