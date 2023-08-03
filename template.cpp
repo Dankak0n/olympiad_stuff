@@ -1,4 +1,4 @@
-//#0.1.1
+//#0.1.2
 #define Lil_Dankakon
 
 #include <map>
@@ -41,8 +41,9 @@
 #define         abs(x) ((x)<0?-(x):(x))
 #define         unq(x) (x.resize(unique(x.begin(),x.end())-x.begin()))
 #define       popcount __builtin_popcountll
-#define      maxbit(x) ((x)>0?63-__builtin_clzll(x):-1)
+#define      maxbit(x) (__lg(x)-(!(x)))
 #define    getbit(x,i) (((x)>>(i))&1)
+#define  setbit(x,i,b) ((b)?(x)|=((b)<<(i)):(x)&=((~(b))-((1LL)<<(i))))
 #define        IN(a,n) for(int _i_=0;_i_<(n);++_i_){cin>>a[_i_];}
 #define     IN2(a,n,m) for(int _i_=0;_i_<(n);++_i_){for(int _j_=0;_j_<(m);++_j_){cin>>a[_i_][_j_];}}
 #define       OUT(a,n) for(int _i_=0;_i_<(n);++_i_){cout<<a[_i_]<<' ';}
