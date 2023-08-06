@@ -1,4 +1,4 @@
-//#0.1.3
+//#0.1.4
 #define Lil_Dankakon
 
 #include <map>
@@ -36,7 +36,7 @@
 #define             eb emplace_back
 #define             mp make_pair
 #define          sq(x) ((x)*(x))
-#define          sz(a) ((a).size())
+#define          sz(a) ((int)(a).size())
 #define         all(a) a.begin(),a.end()
 #define         abs(x) ((x)<0?-(x):(x))
 #define         unq(x) (x.resize(unique(x.begin(),x.end())-x.begin()))
@@ -197,6 +197,3 @@ void _freopen_local() {
     freopen("input.txt", "r", stdin);
 //    freopen("output.txt", "w", stdout);
 }
-
-
-//
