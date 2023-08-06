@@ -1,4 +1,4 @@
-//#0.1.2
+//#0.1.3
 #define Lil_Dankakon
 
 #include <map>
@@ -74,6 +74,9 @@ template<class T1, class T2> pair<T1, T2> operator + (pair<T1, T2> a, pair<T1, T
 template<class T1, class T2> pair<T1, T2> operator - (pair<T1, T2> a, pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; return a; }
 template<class T1, class T2> void operator += (pair<T1, T2> &a, pair<T1, T2> b) { a.first += b.first; a.second += b.second; }
 template<class T1, class T2> void operator -= (pair<T1, T2> &a, pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; }
+
+template <class T1, class T2> void renew(T1 &a, int n, T2 x) { a.clear(); a.resize(n, x); }
+template <class T> void renew(T &a, int n) { a.clear(); a.resize(n); }
 
 using   ll = long long;
 using   ld = double;
