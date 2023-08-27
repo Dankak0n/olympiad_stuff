@@ -1,4 +1,4 @@
-//#0.1.4
+//#0.1.5
 #define Lil_Dankakon
 
 #include <map>
@@ -107,9 +107,9 @@ double getTime() { return clock() / (double) CLOCKS_PER_SEC; }
 bool _is_local = 1;
 #define deb(x) cout << #x << " = " << (x) << endl
 #define debn(x, n) { cout << #x << "(" << n << ") = " << \
-    "{"; int _f_ = 1; rep(0, n, _i_) {if (!_f_) cout << "|"; cout << x[_i_]; _f_= 0;} cout << "}" << endl;}
+	"{"; int _f_ = 1; rep(0, n, _i_) {if (!_f_) cout << "|"; cout << x[_i_]; _f_= 0;} cout << "}" << endl;}
 #define deba(x) { cout << #x << " (size: " << sz(x) << ") = " << \
-    "{"; int _f_ = 1; for (auto o : x) {if (!_f_) cout << "|"; cout << o; _f_ = 0;} cout << "}" << endl;}
+	"{"; int _f_ = 1; for (auto o : x) {if (!_f_) cout << "|"; cout << o; _f_ = 0;} cout << "}" << endl;}
 #else
 bool _is_local = 0;
 #define deb(x) ;
@@ -125,18 +125,18 @@ _precalculation(),
 _cin(int &i);
 
 void _init() {
-    if (_is_local) { _freopen_local(); srand((int)time(0)); rnd.seed((int)time(0)); }
-    else { _freopen(); }
-    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+	if (_is_local) { _freopen_local(); srand((int)time(0)); rnd.seed((int)time(0)); }
+	else { _freopen(); }
+	ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 }
 
 int main() {
-    _init();
-    int tests = 1;
-    _cin(tests);
-    _precalculation();
-    for(int i = 0; i < tests; ++i) _solve();
-    if (_is_local) cout << "\n\ntime = " << getTime() << endl;
+	_init();
+	int tests = 1;
+	_cin(tests);
+	_precalculation();
+	for(int i = 0; i < tests; ++i) _solve();
+	if (_is_local) cout << "\n\ntime = " << getTime() << endl;
 }
 //GOOSE!!! was here :(
 //And I loved him
@@ -185,15 +185,15 @@ void _solve() {
 
 //--------------------------------------------------------------------------------------------------------------------
 void _cin(int &i) {
-//    cin >> i;
+//	cin >> i;
 }
 
 void _freopen() {
-//    freopen("input.txt", "r", stdin);
-//    freopen("output.txt", "w", stdout);
+//	freopen("input.txt", "r", stdin);
+//	freopen("output.txt", "w", stdout);
 }
 
 void _freopen_local() {
-    freopen("input.txt", "r", stdin);
-//    freopen("output.txt", "w", stdout);
+	freopen("input.txt", "r", stdin);
+//	freopen("output.txt", "w", stdout);
 }
