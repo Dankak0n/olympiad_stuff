@@ -1,8 +1,8 @@
-namespace dsu {
+//dsu-------------------------------------------------------------------------------------------------
 #include <vector>
 #include <numeric>
 #include <unordered_map>
-
+namespace dsu {
 struct DSU {
 	int cntV, cntM, cnt_groups;
 	std::unordered_map<int, int> toM, siM;
@@ -36,3 +36,4 @@ struct DSU {
 	}
 };
 }
+//end_dsu---------------------------------------------------------------------------------------------
