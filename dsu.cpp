@@ -1,19 +1,32 @@
-//copied from jiangly (https://codeforces.com/contest/1740/submission/178363447)
 struct DSU {
-	std::vector<int> f, siz;
-	DSU(int n) : f(n), siz(n, 1) { std::iota(f.begin(), f.end(), 0); }
-	int leader(int x) {
-		while (x != f[x]) x = f[x] = f[f[x]];
-		return x;
+	int cntV, cntM, cnt_groups;
+	std::unordered_map<int, int> toM, siM;
+	std::vector<int> toV, siV;
+	DSU() : cntV(0), cntM(0), cnt_groups(0) {}
+	DSU(int n) : cntV(n), cntM(0), cnt_groups(0), toV(n), siV(n, 1) {
+		std::iota(toV.begin(), toV.end(), 0);
 	}
-	bool same(int x, int y) { return leader(x) == leader(y); }
-	bool merge(int x, int y) {
-		x = leader(x);
-		y = leader(y);
-		if (x == y) return false;
-		siz[x] += siz[y];
-		f[y] = x;
+	bool add(int x) {
+		if ((0 <= x && x < cntV) || (toM.find(x) != toM.end())) return false;
+		toM[x] = x; siM[x] = 1; cntM++; cnt_groups++;
 		return true;
 	}
-	int size(int x) { return siz[leader(x)]; }
+	int get(int x) {
+		add(x);
+		while (x != (0 <= x && x < cntV ? toV[x] : toM[x]))
+			x = (0 <= x && x < cntV ? toV[x] = toV[toV[x]] : toM[x] = toM[toM[x]]);
+		return x;
+	}
+	int size(int x) { x = get(x); return (0 <= x && x < cntV ? siV[x] : siM[x]); }
+	int size() { return cnt_groups; }
+	bool same(int x, int y) { return get(x) == get(y); }
+	bool unite(int x, int y) {
+		x = get(x); y = get(y);
+		if (x == y) return false;
+		if (size(x) < size(y)) std::swap(x, y);
+		(0 <= x && x < cntV ? siV[x] : siM[x]) += size(y);
+		(0 <= y && y < cntV ? toV[y] : toM[y]) = x;
+		cnt_groups--;
+		return true;
+	}
 };
