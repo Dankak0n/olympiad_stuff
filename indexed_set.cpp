@@ -1,7 +1,6 @@
 //indexed_set------------------------------------------------------------------------------------------
 #include <ext/pb_ds/assoc_container.hpp>
 #define lower_than order_of_key
-
 namespace indexed_set {
 template<class T = int, class CMP = std::less<T>>
 class iset : public __gnu_pbds::tree
