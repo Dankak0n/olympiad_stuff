@@ -1,4 +1,4 @@
-//#0.1.5
+//#0.2
 #define Lil_Dankakon
 
 #include <map>
@@ -36,7 +36,7 @@
 #define             eb emplace_back
 #define             mp make_pair
 #define          sq(x) ((x)*(x))
-#define          sz(a) ((int)(a).size())
+#define          sz(a) ((int32_t)(a).size())
 #define         all(a) a.begin(),a.end()
 #define         abs(x) ((x)<0?-(x):(x))
 #define         unq(x) (x.resize(unique(x.begin(),x.end())-x.begin()))
@@ -44,156 +44,154 @@
 #define      maxbit(x) (__lg(x)-(!(x)))
 #define    getbit(x,i) (((x)>>(i))&1)
 #define  setbit(x,i,b) ((b)?(x)|=((b)<<(i)):(x)&=((~(b))-((1LL)<<(i))))
-#define        IN(a,n) for(int _i_=0;_i_<(n);++_i_){cin>>a[_i_];}
-#define     IN2(a,n,m) for(int _i_=0;_i_<(n);++_i_){for(int _j_=0;_j_<(m);++_j_){cin>>a[_i_][_j_];}}
-#define       OUT(a,n) for(int _i_=0;_i_<(n);++_i_){cout<<a[_i_]<<' ';}
-#define    OUT2(a,n,m) for(int _i_=0;_i_<(n);++_i_){for(int _j_=0;_j_<(m);++_j_){cout<<a[_i_][_j_]<<' ';}cout<<'\n';}
-#define      ROUT(a,n) for(int _i_=(n)-1;_i_>=0;--_i_){cout<<a[_i_]<<' ';}
-#define    FILL(a,n,x) for(int _i_=0;_i_<(n);++_i_){a[_i_]=(x);}
-#define FILL2(a,n,m,x) for(int _i_=0;_i_<(n);++_i_){for(int _j_=0;_j_<(m);++_j_){a[_i_][_j_]=(x);}}
-#define     rep(f,s,i) for(int i=(f);i!=(s);(f)<(s)?++i:--i)
-#define    repR(l,r,i) for(int i=(l);i<(r);++i)
-#define    repL(r,l,i) for(int i=(r);i>(l);--i)
+#define        IN(a,n) for(int32_t _i_=0;_i_<(n);++_i_){cin>>a[_i_];}
+#define     IN2(a,n,m) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){cin>>a[_i_][_j_];}}
+#define       OUT(a,n) for(int32_t _i_=0;_i_<(n);++_i_){cout<<a[_i_]<<' ';}
+#define    OUT2(a,n,m) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){cout<<a[_i_][_j_]<<' ';}cout<<'\n';}
+#define      ROUT(a,n) for(int32_t _i_=(n)-1;_i_>=0;--_i_){cout<<a[_i_]<<' ';}
+#define    FILL(a,n,x) for(int32_t _i_=0;_i_<(n);++_i_){a[_i_]=(x);}
+#define FILL2(a,n,m,x) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){a[_i_][_j_]=(x);}}
+#define     rep(f,s,i) for(int32_t i=(f);i!=(s);(f)<(s)?++i:--i)
+#define    repR(l,r,i) for(int32_t i=(l);i<(r);++i)
+#define    repL(r,l,i) for(int32_t i=(r);i>(l);--i)
 #define   llrep(f,s,i) for(long long i=(f);i!=(s);(f)<(s)?++i:--i)
 #define  llrepR(l,r,i) for(long long i=(l);i<(r);++i)
 #define  llrepL(r,l,i) for(long long i=(r);i>(l);--i)
-#define         rip(x) for(int _i=0;_i<x;++_i)
-#define       f0r(n,i) for(int i=0;i<n;++i)
-#define      f0rr(n,i) for(int i=n-1;i>=0;--i)
+#define         rip(x) for(int32_t _i=0;_i<x;++_i)
+#define       f0r(n,i) for(int32_t i=0;i<n;++i)
+#define      f0rr(n,i) for(int32_t i=n-1;i>=0;--i)
 
-#define   y0 y_9910
-#define   y1 y_9911
+#define y0 y_0_
+#define y1 y_1_
 
-using namespace std;
+#ifdef LOCAL
+#define deb(x) std::cout<<"\n----\n"<<#x<<" = "<<(x)<<"\n----\n"<<std::endl;
+#define debn(x,n) { std::cout<<"\n----\n"<<#n<<" = "<<(n)<<std::endl<<#x<<" = "; for(int _ii_=0;_ii_<(n);_ii_++) std::cout<<x[_ii_]<<' '; std::cout<<"\n----\n"<<std::endl; }
+#else
+#define deb(x) ;
+#define debn(x,n) ;
+#endif
 
-template<class T1, class T2> ostream& operator << (ostream &o, pair<T1, T2> x) { return o << x.first << ' ' << x.second; }
-template<class T1, class T2> istream& operator >> (istream &o, pair<T1, T2> &x) { return o >> x.first >> x.second; }
-template<class T> ostream& operator << (ostream &o, vector<T> &x) { for (auto &el : x) o << el << ' '; return o; }
-template<class T> istream& operator >> (istream &o, vector<T> &x) { for (auto &el : x) o >> el; return o; }
-template<class T1, class T2> pair<T1, T2> operator + (pair<T1, T2> a, pair<T1, T2> b) { a.first += b.first; a.second += b.second; return a; }
-template<class T1, class T2> pair<T1, T2> operator - (pair<T1, T2> a, pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; return a; }
-template<class T1, class T2> void operator += (pair<T1, T2> &a, pair<T1, T2> b) { a.first += b.first; a.second += b.second; }
-template<class T1, class T2> void operator -= (pair<T1, T2> &a, pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; }
+int32_t _global_id, _global_tests;
+bool _global_fastio;
+char *_global_fopenr = nullptr, *_global_fopenw = nullptr;
+inline void _settings(), _before_all(), _solve(), _after_s(), _after_all();
 
-template <class T1, class T2> void renew(T1 &a, int n, T2 x) { a.clear(); a.resize(n, x); }
-template <class T> void renew(T &a, int n) { a.clear(); a.resize(n); }
+int main() {
+	_settings();
+	if (_global_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
+	if (_global_fopenr) freopen(_global_fopenr, "r", stdin);
+	if (_global_fopenw) freopen(_global_fopenw, "w", stdout);
+	if (_global_tests < 1) std::cin >> _global_tests;
+	_before_all();
+	for (_global_id = 0; _global_id < _global_tests; ++_global_id) _solve(), _after_s();
+	_after_all();
+}
+//GOOSE!!! was here :( And I loved him )':
 
+//shortened--------------------------------------------------------------------------------------------
+namespace shortened {
+namespace operations {
+template<class T1, class T2> std::ostream& operator<<(std::ostream &o, std::pair<T1, T2> x) { return o << x.first << ' ' << x.second; }
+template<class T1, class T2> std::istream& operator>>(std::istream &o, std::pair<T1, T2> &x) { return o >> x.first >> x.second; }
+template<class T> std::ostream& operator<<(std::ostream &o, std::vector<T> &x) { for (auto &el : x) o << el << ' '; return o; }
+template<class T> std::ostream& operator<=(std::ostream &o, std::vector<T> &x) { o << x.size() << '\n'; o << x << '\n'; return o; }
+template<class T> std::istream& operator>>(std::istream &o, std::vector<T> &x) { for (auto &el : x) o >> el; return o; }
+template<class T1, class T2> std::pair<T1, T2> operator+(std::pair<T1, T2> a, std::pair<T1, T2> b) { a.first += b.first; a.second += b.second; return a; }
+template<class T1, class T2> std::pair<T1, T2> operator-(std::pair<T1, T2> a, std::pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; return a; }
+template<class T1, class T2> void operator+=(std::pair<T1, T2> &a, std::pair<T1, T2> b) { a.first += b.first; a.second += b.second; }
+template<class T1, class T2> void operator-=(std::pair<T1, T2> &a, std::pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; }
+}
+
+namespace types {
 using   ll = long long;
 using   ld = double;
 using  lld = long double;
+using uint = unsigned int;
 using  ull = unsigned long long;
-using  str = string;
-using  pll = pair <ll, ll>;
-using  pii = pair <int, int>;
-using  pld = pair <double, double>;
-using  vll = vector <long long>;
-using   vi = vector <int>;
+using  str = std::string;
+using  pii = std::pair<int, int>;
+using  pll = std::pair<long long, long long>;
+using  pld = std::pair<double, double>;
+using   vi = std::vector<int>;
+using  vch = std::vector<char>;
+using  vll = std::vector<long long>;
+using  vvi = std::vector<std::vector<int>>;
+using vvch = std::vector<std::vector<char>>;
+using vvll = std::vector<std::vector<long long>>;
+}
+}
+//end_shortened----------------------------------------------------------------------------------------
 
-mt19937 rnd(0);
-
-int      nint() { int x; cin >> x; return x; }
-long long nll() { long long x; cin >> x; return x; }
-double    nld() { double x; cin >> x; return x; }
-char     nchr() { char x; cin >> x; return x; }
-str      nstr() { string x; cin >> x; return x; }
-
-long long rand(long long n)              { return rnd() % n; }
-long long rand(long long l, long long r) { return rnd() % (r - l + 1) + l; } //[]
-
-double getTime() { return clock() / (double) CLOCKS_PER_SEC; }
-
-
-#ifdef LOCAL
-bool _is_local = 1;
-#define deb(x) cout << #x << " = " << (x) << endl
-#define debn(x, n) { cout << #x << "(" << n << ") = " << \
-	"{"; int _f_ = 1; rep(0, n, _i_) {if (!_f_) cout << "|"; cout << x[_i_]; _f_= 0;} cout << "}" << endl;}
-#define deba(x) { cout << #x << " (size: " << sz(x) << ") = " << \
-	"{"; int _f_ = 1; for (auto o : x) {if (!_f_) cout << "|"; cout << o; _f_ = 0;} cout << "}" << endl;}
-#else
-bool _is_local = 0;
-#define deb(x) ;
-#define debn(x, n) ;
-#define deba(x) ;
-#endif
-
-void
-_freopen(),
-_freopen_local(),
-_solve(),
-_precalculation(),
-_cin(int &i);
-
-void _init() {
-	if (_is_local) { _freopen_local(); srand((int)time(0)); rnd.seed((int)time(0)); }
-	else { _freopen(); }
-	ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+//useful-----------------------------------------------------------------------------------------------
+namespace useful {
+namespace functions {
+char        nchr() { char x; std::cin >> x; return x;        }
+double       nld() { double x; std::cin >> x; return x;      }
+int32_t     nint() { int32_t x; std::cin >> x; return x;     }
+long long    nll() { long long x; std::cin >> x; return x;   }
+std::string nstr() { std::string x; std::cin >> x; return x; }
+template<class T>            void renew(T &a, int32_t n) { a.clear(); a.resize(n); }
+template<class T1, class T2> void renew(T1 &a, int32_t n, T2 x) { a.clear(); a.resize(n, x); }
+double _get_time() { return clock() / (double)CLOCKS_PER_SEC; }
 }
 
-int main() {
-	_init();
-	int tests = 1;
-	_cin(tests);
-	_precalculation();
-	for(int i = 0; i < tests; ++i) _solve();
-	if (_is_local) cout << "\n\ntime = " << getTime() << endl;
+namespace constants {
+const std::vector<std::pair<int32_t, int32_t>> to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+const std::vector<std::pair<int32_t, int32_t>> to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+const std::vector<std::pair<int32_t, int32_t>> toK = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
+const std::string _alf = "abcdefghijklmnopqrstuvwxyz";
+const std::string _ALF = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const int       iINF = 2000000007;
+const long long INF  = 2000000000000000007;
+const long long MOD1 = 1000000007;
+const long long MOD2 = 998244353;
 }
-//GOOSE!!! was here :(
-//And I loved him
-//)':
-
-const double PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
-const string _alf = "abcdefghijklmnopqrstuvwxyz";
-const string _ALF = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-//--------------------------------------------------------------------------------------------------------------------
+}
+//end_useful-------------------------------------------------------------------------------------------
 
 //namespace...
 
-//#include <ext/pb_ds/assoc_container.hpp>
-//#define    unknown_t int
-//#define   lower_than order_of_key
-//#define get_ith(s,i) *s.find_by_order(i)
-//using namespace __gnu_pbds;
-//typedef tree <unknown_t, null_type, less <unknown_t>, rb_tree_tag, tree_order_statistics_node_update> indexed_set;
+using namespace std;
+using namespace shortened::operations;
+using namespace shortened::types;
+using namespace useful::functions;
+using namespace useful::constants;
+//using namespace...
 
-//#include <bits/stdc++.h>
+void _after_s() {
+//	std::cout << '\n';
+}
 
-//const vector < pair <int, int> > to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-//const vector < pair <int, int> > to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
-//const vector < pair <int, int> > toK = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
+void _after_all() {
+#ifdef LOCAL
+	std::cout << "\n\ntime = " << useful::functions::_get_time() << std::endl;
+#else
+#endif
+}
 
-const int      iINF = 2000000007;
-const long long INF = 2000000000000000007;
-
-//1000000007
-//998244353
 const long long MOD = 1000000007;
-
 const int         K = 10;
 const int         D = 1010;
 const int         N = 100100;
 
-//using namespace
-
-void _precalculation() {
-}
+void _before_all() {}
 
 void _solve() {
 }
 
-
-//--------------------------------------------------------------------------------------------------------------------
-void _cin(int &i) {
-//	cin >> i;
-}
-
-void _freopen() {
-//	freopen("input.txt", "r", stdin);
-//	freopen("output.txt", "w", stdout);
-}
-
-void _freopen_local() {
-	freopen("input.txt", "r", stdin);
-//	freopen("output.txt", "w", stdout);
+//-----------------------------------------------------------------------------------------------------
+void _settings() {
+	_global_tests  = 1;
+	_global_fastio = 1;
+#ifdef LOCAL
+	static char fropenr[] = "input.txt";//input.txt
+	static char fropenw[] = "";//output.txt
+#else
+	_global_fastio = 1;
+	static char fropenr[] = "";//input.txt
+	static char fropenw[] = "";//output.txt
+#endif
+	_global_fopenr = fropenr;
+	_global_fopenw = fropenw;
 }
