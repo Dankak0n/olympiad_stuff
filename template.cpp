@@ -1,4 +1,4 @@
-//#0.2
+//#0.2.1
 #define Lil_Dankakon
 
 #include <map>
@@ -38,7 +38,6 @@
 #define          sq(x) ((x)*(x))
 #define          sz(a) ((int32_t)(a).size())
 #define         all(a) a.begin(),a.end()
-#define         abs(x) ((x)<0?-(x):(x))
 #define         unq(x) (x.resize(unique(x.begin(),x.end())-x.begin()))
 #define       popcount __builtin_popcountll
 #define      maxbit(x) (__lg(x)-(!(x)))
@@ -131,6 +130,11 @@ double       nld() { double x; std::cin >> x; return x;      }
 int32_t     nint() { int32_t x; std::cin >> x; return x;     }
 long long    nll() { long long x; std::cin >> x; return x;   }
 std::string nstr() { std::string x; std::cin >> x; return x; }
+template<class T> inline T abs(T x) { return (x < 0 ? -x : x); }
+template<class T1, class T2> auto max(T1 a, T2 b) { return (a < b ? b : a); }
+template<class T1, class T2> auto min(T1 a, T2 b) { return (a < b ? a : b); }
+template<class T1, class T2> T1 maxx(T1 &a, T2 b) { a = std::max(a, (T1)b); return a; }
+template<class T1, class T2> T1 minn(T1 &a, T2 b) { a = std::min(a, (T1)b); return a; }
 template<class T>            void renew(T &a, int32_t n) { a.clear(); a.resize(n); }
 template<class T1, class T2> void renew(T1 &a, int32_t n, T2 x) { a.clear(); a.resize(n, x); }
 double _get_time() { return clock() / (double)CLOCKS_PER_SEC; }
