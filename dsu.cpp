@@ -3,7 +3,8 @@
 #include <numeric>
 #include <unordered_map>
 namespace dsu {
-struct DSU {
+class DSU {
+public:
 	int cntV, cntM, cnt_groups;
 	std::unordered_map<int, int> toM, siM;
 	std::vector<int> toV, siV;
