@@ -79,8 +79,8 @@ inline void _settings(), _before_all(), _solve(), _after_s(), _after_all();
 int main() {
 _settings();
 if (_global_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
-if (_global_fopenr) freopen(_global_fopenr, "r", stdin);
-if (_global_fopenw) freopen(_global_fopenw, "w", stdout);
+if (_global_fopenr[0]) freopen(_global_fopenr, "r", stdin);
+if (_global_fopenw[0]) freopen(_global_fopenw, "w", stdout);
 if (_global_tests < 1) std::cin >> _global_tests;
 _before_all();
 for (_global_id = 0; _global_id < _global_tests; ++_global_id) _solve(), _after_s();
