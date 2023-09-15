@@ -1,4 +1,4 @@
-//#0.2.1
+//#0.2.2
 #define Lil_Dankakon
 
 #include <map>
@@ -63,14 +63,38 @@
 #define y0 y_0_
 #define y1 y_1_
 
+//debug------------------------------------------------------------------------------------------------
+namespace debug_ns {
 #ifdef LOCAL
-#define deb(x) std::cout<<"\n----\n"<<#x<<" = "<<(x)<<"\n----\n"<<std::endl;
-#define debn(x,n) { std::cout<<"\n----\n"<<#n<<" = "<<(n)<<std::endl<<#x<<" = "; for(int _ii_=0;_ii_<(n);_ii_++) std::cout<<x[_ii_]<<' '; std::cout<<"\n----\n"<<std::endl; }
+#define zerT std::ostream& operator==(std::ostream &o, const
+#define oneT template<class T> std::ostream& operator==(std::ostream &o, const
+#define twoT template<class T1, class T2> std::ostream& operator==(std::ostream &o, const
+zerT bool&x){return o<<x;}
+zerT int8_t&x){return o<<x;}zerT int16_t&x){return o<<x;}zerT int32_t&x){return o<<x;}zerT int64_t&x){return o<<x;}
+zerT uint8_t&x){return o<<x;}zerT uint16_t&x){return o<<x;}zerT uint32_t&x){return o<<x;}zerT uint64_t&x){return o<<x;}
+zerT char16_t&x){return o<<"'"<<x<<"'";}zerT char32_t&x){return o<<"'"<<x<<"'";}
+zerT float&x){return o<<x;}zerT double&x){return o<<x;}zerT long double&x){return o<<x;}
+zerT std::string&x){return o<<"\""<<x<<"\"";}
+twoT std::pair<T1,T2>&x){o<<"( ";o==x.first;o<<" , ";o==x.second;o<<" )";return o;}
+oneT std::vector<T>&x){o<<"[ ";char c=0;for(auto&el:x){o<<(c++?"| ":"");o==el;}o<<" ]\n";return o;}
+oneT std::set<T>&x){o<<"{";std::vector<T>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+oneT std::multiset<T>&x){o<<"{";std::vector<T>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+oneT std::unordered_set<T>&x){o<<"{";std::vector<T>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+oneT std::unordered_multiset<T>&x){o<<"{";std::vector<T>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+twoT std::map<T1,T2>&x){o<<"{";std::vector<std::pair<T1,T2>>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+twoT std::multimap<T1,T2>&x){o<<"{";std::vector<std::pair<T1,T2>>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+twoT std::unordered_map<T1,T2>&x){o<<"{";std::vector<std::pair<T1,T2>>z(x.begin(),x.end());o==z;o<<"}\n";return o;}
+#undef twoT
+#undef oneT
+#undef zerT
+#define deb(x) std::cout<<#x<<" = ";std::cout==x;
+#define debn(x,n) std::cout<<#x<<" = ";std::cout<<"[ ";for(int32_t __c__=0;__c__<n;){std::cout<<(__c__++?"| ":"");std::cout==x[__c__];}std::cout<<" ]\n";
 #else
-#define deb(x) ;
-#define debn(x,n) ;
+#define deb(x) 1L-043U;
+#define debn(x,n) 1L-043U;
 #endif
-
+}
+//end_debug--------------------------------------------------------------------------------------------
 int32_t _global_id, _global_tests;
 bool _global_fastio;
 char *_global_fopenr = nullptr, *_global_fopenw = nullptr;
@@ -89,12 +113,12 @@ _after_all();
 //GOOSE!!! was here :( And I loved him )':
 
 //shortened--------------------------------------------------------------------------------------------
-namespace shortened {
-namespace operations {
+namespace shortened_ns {
+namespace operations_ns {
 template<class T1, class T2> std::ostream& operator<<(std::ostream &o, std::pair<T1, T2> x) { return o << x.first << ' ' << x.second; }
 template<class T1, class T2> std::istream& operator>>(std::istream &o, std::pair<T1, T2> &x) { return o >> x.first >> x.second; }
 template<class T> std::ostream& operator<<(std::ostream &o, std::vector<T> &x) { for (auto &el : x) o << el << ' '; return o; }
-template<class T> std::ostream& operator<=(std::ostream &o, std::vector<T> &x) { o << x.size() << '\n'; o << x << '\n'; return o; }
+template<class T> std::ostream& operator<=(std::ostream &o, std::vector<T> &x) { o << x.size() << '\n' << x; return o; }
 template<class T> std::istream& operator>>(std::istream &o, std::vector<T> &x) { for (auto &el : x) o >> el; return o; }
 template<class T1, class T2> std::pair<T1, T2> operator+(std::pair<T1, T2> a, std::pair<T1, T2> b) { a.first += b.first; a.second += b.second; return a; }
 template<class T1, class T2> std::pair<T1, T2> operator-(std::pair<T1, T2> a, std::pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; return a; }
@@ -102,7 +126,7 @@ template<class T1, class T2> void operator+=(std::pair<T1, T2> &a, std::pair<T1,
 template<class T1, class T2> void operator-=(std::pair<T1, T2> &a, std::pair<T1, T2> b) { a.first -= b.first; a.second -= b.second; }
 }
 
-namespace types {
+namespace types_ns {
 using   ll = long long;
 using   ld = double;
 using  lld = long double;
@@ -123,8 +147,8 @@ using vvll = std::vector<std::vector<long long>>;
 //end_shortened----------------------------------------------------------------------------------------
 
 //useful-----------------------------------------------------------------------------------------------
-namespace useful {
-namespace functions {
+namespace useful_ns {
+namespace functions_ns {
 char        nchr() { char x; std::cin >> x; return x;        }
 double       nld() { double x; std::cin >> x; return x;      }
 int32_t     nint() { int32_t x; std::cin >> x; return x;     }
@@ -140,7 +164,7 @@ template<class T1, class T2> void renew(T1 &a, int32_t n, T2 x) { a.clear(); a.r
 double _get_time() { return clock() / (double)CLOCKS_PER_SEC; }
 }
 
-namespace constants {
+namespace constants_ns {
 const std::vector<std::pair<int32_t, int32_t>> to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 const std::vector<std::pair<int32_t, int32_t>> to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 const std::vector<std::pair<int32_t, int32_t>> toK = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
@@ -157,10 +181,11 @@ const long long MOD2 = 998244353;
 //namespace...
 
 using namespace std;
-using namespace shortened::operations;
-using namespace shortened::types;
-using namespace useful::functions;
-using namespace useful::constants;
+using namespace shortened_ns::operations_ns;
+using namespace shortened_ns::types_ns;
+using namespace useful_ns::functions_ns;
+using namespace useful_ns::constants_ns;
+using namespace debug_ns;
 //using namespace...
 
 void _after_s() {
@@ -171,7 +196,7 @@ void _after_s() {
 
 void _after_all() {
 #ifdef LOCAL
-std::cout << "\n\ntime = " << useful::functions::_get_time() << std::endl;
+std::cout << "\n\ntime = " << useful_ns::functions_ns::_get_time() << std::endl;
 #else
 #endif
 }
