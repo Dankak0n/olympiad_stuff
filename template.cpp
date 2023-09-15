@@ -1,4 +1,4 @@
-//#0.2.2
+//#0.2.3
 #define Lil_Dankakon
 
 #include <map>
@@ -113,6 +113,15 @@ twoT std::unordered_map<T1,T2>&x){o<<"{";std::vector<std::pair<T1,T2>>z(x.begin(
 }
 //end_debug--------------------------------------------------------------------------------------------
 
+//random-----------------------------------------------------------------------------------------------
+namespace random_ns {
+size_t rndi(size_t x) { std::uniform_int_distribution<size_t> d(0, x - 1); std::mt19937 e(std::time(nullptr)); return d(e); }
+int64_t rndi(int64_t l, int64_t r) { return l + rndi(r - l + 1); }
+long double rndf(long double x) { std::uniform_real_distribution<long double> d(0, x); std::mt19937 e((long double)std::time(nullptr)); return d(e); }
+long double rndf(long double l, long double r) { return l + rndf(r - l); }
+}
+//end_random-------------------------------------------------------------------------------------------
+
 //shortened--------------------------------------------------------------------------------------------
 namespace shortened_ns {
 namespace operations_ns {
@@ -187,6 +196,7 @@ using namespace shortened_ns::types_ns;
 using namespace useful_ns::functions_ns;
 using namespace useful_ns::constants_ns;
 using namespace debug_ns;
+using namespace random_ns;
 //using namespace...
 
 void _after_s() {
