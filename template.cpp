@@ -63,6 +63,23 @@
 #define y0 y_0_
 #define y1 y_1_
 
+int32_t _global_id, _global_tests;
+bool _global_fastio;
+char *_global_fopenr = nullptr, *_global_fopenw = nullptr;
+inline void _settings(), _before_all(), _solve(), _after_s(), _after_all();
+
+int main() {
+_settings();
+if (_global_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
+if (_global_fopenr[0]) freopen(_global_fopenr, "r", stdin);
+if (_global_fopenw[0]) freopen(_global_fopenw, "w", stdout);
+if (_global_tests < 1) std::cin >> _global_tests;
+_before_all();
+for (_global_id = 0; _global_id < _global_tests; ++_global_id) _solve(), _after_s();
+_after_all();
+}
+//GOOSE!!! was here :( And I loved him )':
+
 //debug------------------------------------------------------------------------------------------------
 namespace debug_ns {
 #ifdef LOCAL
@@ -90,27 +107,11 @@ twoT std::unordered_map<T1,T2>&x){o<<"{";std::vector<std::pair<T1,T2>>z(x.begin(
 #define deb(x) std::cout<<#x<<" = ";std::cout==x;
 #define debn(x,n) std::cout<<#x<<" = ";std::cout<<"[ ";for(int32_t __c__=0;__c__<n;){std::cout<<(__c__++?"| ":"");std::cout==x[__c__];}std::cout<<" ]\n";
 #else
-#define deb(x) 1L-043U;
-#define debn(x,n) 1L-043U;
+#define deb(x) ;
+#define debn(x,n) ;
 #endif
 }
 //end_debug--------------------------------------------------------------------------------------------
-int32_t _global_id, _global_tests;
-bool _global_fastio;
-char *_global_fopenr = nullptr, *_global_fopenw = nullptr;
-inline void _settings(), _before_all(), _solve(), _after_s(), _after_all();
-
-int main() {
-_settings();
-if (_global_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
-if (_global_fopenr[0]) freopen(_global_fopenr, "r", stdin);
-if (_global_fopenw[0]) freopen(_global_fopenw, "w", stdout);
-if (_global_tests < 1) std::cin >> _global_tests;
-_before_all();
-for (_global_id = 0; _global_id < _global_tests; ++_global_id) _solve(), _after_s();
-_after_all();
-}
-//GOOSE!!! was here :( And I loved him )':
 
 //shortened--------------------------------------------------------------------------------------------
 namespace shortened_ns {
