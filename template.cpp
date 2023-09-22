@@ -56,9 +56,9 @@
 #define   llrep(f,s,i) for(long long i=(f);i!=(s);(f)<(s)?++i:--i)
 #define  llrepR(l,r,i) for(long long i=(l);i<(r);++i)
 #define  llrepL(r,l,i) for(long long i=(r);i>(l);--i)
-#define         rip(x) for(int32_t _i=0;_i<x;++_i)
-#define       f0r(n,i) for(int32_t i=0;i<n;++i)
-#define      f0rr(n,i) for(int32_t i=n-1;i>=0;--i)
+#define         rip(x) for(int32_t _i=0;_i<(x);++_i)
+#define       f0r(n,i) for(int32_t i=0;i<(n);++i)
+#define      f0rr(n,i) for(int32_t i=(n)-1;i>=0;--i)
 
 #define y0 y_0_
 #define y1 y_1_
