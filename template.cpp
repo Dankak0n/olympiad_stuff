@@ -1,4 +1,4 @@
-//#0.2.3
+//#0.2.4
 #define Lil_Dankakon
 
 #include <map>
@@ -20,62 +20,69 @@
 #include <numeric>
 #include <cassert>
 #include <utility>
+#include <cassert>
 #include <iterator>
-#include <assert.h>
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
 
-#define              P pair
-#define              V vector
-#define             fi first
-#define             se second
-#define             re return
-#define             pb push_back
-#define             eb emplace_back
-#define             mp make_pair
-#define          sq(x) ((x)*(x))
-#define          sz(a) ((int32_t)(a).size())
-#define         all(a) a.begin(),a.end()
-#define         unq(x) (x.resize(unique(x.begin(),x.end())-x.begin()))
-#define       popcount __builtin_popcountll
-#define      maxbit(x) (__lg(x)-(!(x)))
-#define    getbit(x,i) (((x)>>(i))&1)
-#define  setbit(x,i,b) ((b)?(x)|=((b)<<(i)):(x)&=((~(b))-((1LL)<<(i))))
-#define        IN(a,n) for(int32_t _i_=0;_i_<(n);++_i_){cin>>a[_i_];}
-#define     IN2(a,n,m) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){cin>>a[_i_][_j_];}}
-#define       OUT(a,n) for(int32_t _i_=0;_i_<(n);++_i_){cout<<a[_i_]<<' ';}
-#define    OUT2(a,n,m) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){cout<<a[_i_][_j_]<<' ';}cout<<'\n';}
-#define      ROUT(a,n) for(int32_t _i_=(n)-1;_i_>=0;--_i_){cout<<a[_i_]<<' ';}
-#define    FILL(a,n,x) for(int32_t _i_=0;_i_<(n);++_i_){a[_i_]=(x);}
-#define FILL2(a,n,m,x) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){a[_i_][_j_]=(x);}}
-#define     rep(f,s,i) for(int32_t i=(f);i!=(s);(f)<(s)?++i:--i)
-#define    repR(l,r,i) for(int32_t i=(l);i<(r);++i)
-#define    repL(r,l,i) for(int32_t i=(r);i>(l);--i)
-#define   llrep(f,s,i) for(long long i=(f);i!=(s);(f)<(s)?++i:--i)
-#define  llrepR(l,r,i) for(long long i=(l);i<(r);++i)
-#define  llrepL(r,l,i) for(long long i=(r);i>(l);--i)
-#define         rip(x) for(int32_t _i=0;_i<(x);++_i)
-#define       f0r(n,i) for(int32_t i=0;i<(n);++i)
-#define      f0rr(n,i) for(int32_t i=(n)-1;i>=0;--i)
+#define  P pair
+#define  V vector
+#define fi first
+#define se second
+#define re return
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
 
-#define y0 y_0_
-#define y1 y_1_
+#define  sq(x) ((x)*(x))
+#define  sz(a) ((int32_t)(a).size())
+#define all(a) (a).begin(),(a).end()
+#define unq(a) ((a).resize(unique((a).begin(),(a).end())-(a).begin()))
 
-int32_t _global_id, _global_tests;
-bool _global_fastio;
-char *_global_fopenr = nullptr, *_global_fopenw = nullptr;
+#define      popcount __builtin_popcountll
+#define     maxbit(x) (__lg(x)-(!(x)))
+#define   getbit(x,i) (((x)>>(i))&1)
+#define setbit(x,i,b) ((b)!=(((x)>>(i))&1)?(x)^=(1LL<<(i)):42)
+
+#define     IN(a,n) for(int32_t _i_=0;_i_<(n);++_i_){cin>>a[_i_];}
+#define  IN2(a,n,m) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){cin>>a[_i_][_j_];}}
+#define    OUT(a,n) for(int32_t _i_=0;_i_<(n);++_i_){cout<<a[_i_]<<' ';}
+#define OUT2(a,n,m) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){cout<<a[_i_][_j_]<<' ';}cout<<'\n';}
+#define   ROUT(a,n) for(int32_t _i_=(n)-1;_i_>=0;--_i_){cout<<a[_i_]<<' ';}
+
+#define      FILL(a,n,x) for(int32_t _i_=0;_i_<(n);++_i_){a[_i_]=(x);}
+#define   FILL2(a,n,m,x) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){a[_i_][_j_]=(x);}}
+#define FILL3(a,n,m,o,x) for(int32_t _i_=0;_i_<(n);++_i_){for(int32_t _j_=0;_j_<(m);++_j_){for(int32_t _k_=0;_k_<(o);++_k_){a[_i_][_j_][_k_]=(x);}}}
+
+#define    rep(i,f,s) for(int32_t i=(f);i!=(s);(f)<(s)?++i:--i)
+#define   repR(i,l,r) for(int32_t i=(l);i<(r);++i)
+#define   repL(i,r,l) for(int32_t i=(r);i>(l);--i)
+#define  llrep(i,f,s) for(int64_t i=(f);i!=(s);(f)<(s)?++i:--i)
+#define llrepR(i,l,r) for(int64_t i=(l);i<(r);++i)
+#define llrepL(i,r,l) for(int64_t i=(r);i>(l);--i)
+#define        rip(x) for(int32_t _i=0;_i<(x);++_i)
+#define      f0r(i,n) for(int32_t i=0;i<(n);++i)
+#define     f0rr(i,n) for(int32_t i=(n)-1;i>=0;--i)
+
+#define   y0 y_0_
+#define   y1 y_1_
+#define data DaTa
+
+int32_t _gl_id, _gl_tests_cnt;
+bool _gl_fastio;
+char *_gl_fopenr = nullptr, *_gl_fopenw = nullptr;
 inline void _settings(), _before_all(), _solve(), _after_s(), _after_all();
 
 int main() {
 _settings();
-if (_global_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
-if (_global_fopenr[0]) freopen(_global_fopenr, "r", stdin);
-if (_global_fopenw[0]) freopen(_global_fopenw, "w", stdout);
-if (_global_tests < 1) std::cin >> _global_tests;
+if (_gl_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
+if (_gl_fopenr != nullptr) freopen(_gl_fopenr, "r", stdin);
+if (_gl_fopenw != nullptr) freopen(_gl_fopenw, "w", stdout);
+if (_gl_tests_cnt < 1) std::cin >> _gl_tests_cnt;
 _before_all();
-for (_global_id = 0; _global_id < _global_tests; ++_global_id) _solve(), _after_s();
+for (_gl_id = 0; _gl_id < _gl_tests_cnt; ++_gl_id) _solve(), _after_s();
 _after_all();
 }
 //GOOSE!!! was here :( And I loved him )':
@@ -149,9 +156,9 @@ using  pld = std::pair<double, double>;
 using   vi = std::vector<int>;
 using  vch = std::vector<char>;
 using  vll = std::vector<long long>;
-using  vvi = std::vector<std::vector<int>>;
-using vvch = std::vector<std::vector<char>>;
-using vvll = std::vector<std::vector<long long>>;
+using  vvi = std::vector<std::vector<int> >;
+using vvch = std::vector<std::vector<char> >;
+using vvll = std::vector<std::vector<long long> >;
 }
 }
 //end_shortened----------------------------------------------------------------------------------------
@@ -159,9 +166,9 @@ using vvll = std::vector<std::vector<long long>>;
 //useful-----------------------------------------------------------------------------------------------
 namespace useful_ns {
 namespace functions_ns {
+int         nint() { int x; std::cin >> x; return x;         }
 char        nchr() { char x; std::cin >> x; return x;        }
 double       nld() { double x; std::cin >> x; return x;      }
-int32_t     nint() { int32_t x; std::cin >> x; return x;     }
 long long    nll() { long long x; std::cin >> x; return x;   }
 std::string nstr() { std::string x; std::cin >> x; return x; }
 template<class T> inline T abs(T x) { return (x < 0 ? -x : x); }
@@ -169,15 +176,15 @@ template<class T1, class T2> auto max(T1 a, T2 b) { return (a < b ? b : a); }
 template<class T1, class T2> auto min(T1 a, T2 b) { return (a < b ? a : b); }
 template<class T1, class T2> T1 maxx(T1 &a, T2 b) { a = std::max(a, (T1)b); return a; }
 template<class T1, class T2> T1 minn(T1 &a, T2 b) { a = std::min(a, (T1)b); return a; }
-template<class T>            void renew(T &a, int32_t n) { a.clear(); a.resize(n); }
-template<class T1, class T2> void renew(T1 &a, int32_t n, T2 x) { a.clear(); a.resize(n, x); }
+template<class T>            void renew(T &a, int n) { a.clear(); a.resize(n); }
+template<class T1, class T2> void renew(T1 &a, int n, T2 x) { a.clear(); a.resize(n, x); }
 double _get_time() { return clock() / (double)CLOCKS_PER_SEC; }
 }
 
 namespace constants_ns {
-const std::vector<std::pair<int32_t, int32_t>> to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-const std::vector<std::pair<int32_t, int32_t>> to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
-const std::vector<std::pair<int32_t, int32_t>> toK = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
+const std::vector<std::pair<int, int> > to4 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+const std::vector<std::pair<int, int> > to8 = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+const std::vector<std::pair<int, int> > toK = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
 const std::string _alf = "abcdefghijklmnopqrstuvwxyz";
 const std::string _ALF = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const int       iINF = 2000000007;
@@ -207,7 +214,7 @@ void _after_s() {
 
 void _after_all() {
 #ifdef LOCAL
-std::cout << "\n\ntime = " << useful_ns::functions_ns::_get_time() << std::endl;
+std::cout << "\n__________\ntime = " << useful_ns::functions_ns::_get_time() << std::endl;
 #else
 #endif
 }
@@ -224,15 +231,13 @@ void _solve() {
 
 //-----------------------------------------------------------------------------------------------------
 void _settings() {
-_global_tests  = 1;
-_global_fastio = 1;
+_gl_tests_cnt = 1;
+_gl_fastio    = 1;
 #ifdef LOCAL
-static char fropenr[] = "input.txt";//input.txt
-static char fropenw[] = "";//output.txt
+_gl_fopenr = strdup("input.txt");//input.txt
+_gl_fopenw = strdup("");//output.txt
 #else
-static char fropenr[] = "";//input.txt
-static char fropenw[] = "";//output.txt
+_gl_fopenr = strdup("");//input.txt
+_gl_fopenw = strdup("");//output.txt
 #endif
-_global_fopenr = fropenr;
-_global_fopenw = fropenw;
 }
