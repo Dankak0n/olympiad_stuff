@@ -78,8 +78,8 @@ inline void _settings(), _before_all(), _solve(), _after_s(), _after_all();
 int main() {
 _settings();
 if (_gl_fastio) { std::ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr); }
-if (_gl_fopenr != nullptr) freopen(_gl_fopenr, "r", stdin);
-if (_gl_fopenw != nullptr) freopen(_gl_fopenw, "w", stdout);
+if (_gl_fopenr != nullptr && _gl_fopenr[0]) freopen(_gl_fopenr, "r", stdin);
+if (_gl_fopenw != nullptr && _gl_fopenw[0]) freopen(_gl_fopenw, "w", stdout);
 if (_gl_tests_cnt < 1) std::cin >> _gl_tests_cnt;
 _before_all();
 for (_gl_id = 0; _gl_id < _gl_tests_cnt; ++_gl_id) _solve(), _after_s();
