@@ -9,7 +9,7 @@ public:
 	std::unordered_map<int, int> toM, siM;
 	std::vector<int> toV, siV;
 	DSU() : cntV(0), cntM(0), cnt_groups(0) {}
-	DSU(int n) : cntV(n), cntM(0), cnt_groups(0), toV(n), siV(n, 1) {
+	DSU(int n) : cntV(n), cntM(0), cnt_groups(n), toV(n), siV(n, 1) {
 		std::iota(toV.begin(), toV.end(), 0);
 	}
 	bool add(int x) {
