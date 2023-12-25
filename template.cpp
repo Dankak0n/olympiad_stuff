@@ -1,6 +1,7 @@
 //#0.2.4
 #define Lil_Dankakon
 
+#define _USE_MATH_DEFINES
 #include <map>
 #include <set>
 #include <cmath>
